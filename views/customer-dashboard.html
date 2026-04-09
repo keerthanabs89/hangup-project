@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer Dashboard - HANG UP</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>HANG UP</h1>
+    <p>Your Fashion Request Dashboard</p>
+  </header>
+
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <h2 class="page-heading">Welcome Back 👗</h2>
+        <p class="subtext">Track your requests, payments and deliveries</p>
+      </div>
+      <div class="nav-links">
+        <a href="/request-form">+ Post New Request</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><h3>Total Requests</h3><p id="custTotalRequests">0</p></div>
+      <div class="stat-card"><h3>Curated</h3><p id="custCuratedCount">0</p></div>
+      <div class="stat-card"><h3>Paid</h3><p id="custPaidCount">0</p></div>
+      <div class="stat-card"><h3>Shipped</h3><p id="custShippedCount">0</p></div>
+    </div>
+
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleSection('pendingRequests')">🕒 Pending Requests</div>
+      <div id="pendingRequests" class="accordion-content grid"></div>
+
+      <div class="accordion-header" onclick="toggleSection('acceptedRequests')">✅ Accepted Requests</div>
+      <div id="acceptedRequests" class="accordion-content grid"></div>
+
+      <div class="accordion-header" onclick="toggleSection('curatedRequests')">✨ Curated / Ready to Pay</div>
+      <div id="curatedRequests" class="accordion-content grid"></div>
+
+      <div class="accordion-header" onclick="toggleSection('paidRequests')">💳 Paid Orders</div>
+      <div id="paidRequests" class="accordion-content grid"></div>
+
+      <div class="accordion-header" onclick="toggleSection('shippedRequests')">📦 Shipped Orders</div>
+      <div id="shippedRequests" class="accordion-content grid"></div>
+
+      <div class="accordion-header" onclick="toggleSection('rejectedRequests')">❌ Rejected Requests</div>
+      <div id="rejectedRequests" class="accordion-content grid"></div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Signup - HANG UP</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Create Account</h1>
+    <p>Join HANG UP as customer, store or admin</p>
+  </header>
+
+  <div class="container">
+    <div class="card form-card">
+      <h2 class="center">Create Your Account</h2>
+      <form id="signupForm">
+        <input type="text" id="signupName" placeholder="Full Name" required />
+        <input type="email" id="signupEmail" placeholder="Email" required />
+        <input type="password" id="signupPassword" placeholder="Password" required />
+
+        <select id="signupRole" required>
+          <option value="">Select Role</option>
+          <option value="customer">Customer</option>
+          <option value="store">Store</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <button type="submit">Signup</button>
+      </form>
+      <p id="signupMessage" class="center"></p>
+      <p class="center">Already have an account? <a href="/login">Login</a></p>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

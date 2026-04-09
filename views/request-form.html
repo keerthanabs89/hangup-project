@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Post Request - HANG UP</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Post Your Dress Request</h1>
+    <p>Tell stores what kind of dress you want</p>
+  </header>
+
+  <div class="container">
+    <div class="card form-card">
+      <form id="requestForm" enctype="multipart/form-data">
+        <input type="text" id="style" placeholder="Style (e.g. Korean, Vintage, Party)" required />
+        <input type="number" id="budget" placeholder="Budget in ₹" required />
+        <input type="text" id="size" placeholder="Size (S / M / L / XL)" required />
+
+        <select id="category" required>
+          <option value="">Select Category</option>
+          <option value="Casual">Casual</option>
+          <option value="Party Wear">Party Wear</option>
+          <option value="Traditional">Traditional</option>
+          <option value="Western">Western</option>
+          <option value="Formal">Formal</option>
+        </select>
+
+        <label><strong>Upload Inspiration Image</strong></label>
+        <input type="file" id="image" accept="image/*" />
+
+        <button type="submit">Post Request</button>
+      </form>
+
+      <p id="requestMessage" class="center"></p>
+      <div class="center">
+        <a href="/customer-dashboard">⬅ Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

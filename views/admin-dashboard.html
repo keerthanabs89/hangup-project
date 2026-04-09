@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - HANG UP</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <p>Platform analytics, users, orders and profits</p>
+  </header>
+
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <h2 class="page-heading">Admin Control Panel</h2>
+        <p class="subtext">Track users, requests, platform profit and sales</p>
+      </div>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><h3>Total Users</h3><p id="totalUsers">0</p></div>
+      <div class="stat-card"><h3>Total Requests</h3><p id="totalRequests">0</p></div>
+      <div class="stat-card"><h3>Paid Orders</h3><p id="paidCount">0</p></div>
+      <div class="stat-card"><h3>Platform Profit</h3><p id="platformProfit">₹0</p></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">👥 All Users</h2>
+      <div id="allUsers" class="admin-list"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">📋 All Requests</h2>
+      <div id="allRequests" class="grid"></div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

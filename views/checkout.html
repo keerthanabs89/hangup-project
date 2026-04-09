@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout - HANG UP</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Checkout</h1>
+    <p>Choose your payment method and complete your order</p>
+  </header>
+
+  <div class="container">
+    <div class="card form-card">
+      <h2 class="center">Select Payment Method</h2>
+
+      <form id="checkoutForm">
+        <input type="hidden" id="paymentMethod" />
+
+        <div class="payment-grid">
+          <div class="payment-option" onclick="selectPayment('PhonePe', this)">
+            <div class="payment-title">PhonePe</div>
+          </div>
+
+          <div class="payment-option" onclick="selectPayment('Google Pay', this)">
+            <div class="payment-title">Google Pay</div>
+          </div>
+
+          <div class="payment-option" onclick="selectPayment('Other UPI', this)">
+            <div class="payment-title">Other UPI</div>
+          </div>
+
+          <div class="payment-option" onclick="selectPayment('Card', this)">
+            <div class="payment-title">Card</div>
+          </div>
+
+          <div class="payment-option" onclick="selectPayment('Cash on Delivery', this)">
+            <div class="payment-title">Cash on Delivery</div>
+          </div>
+        </div>
+
+        <div id="upiSection" style="display:none;">
+          <input type="text" id="upiId" placeholder="Enter UPI ID (example@upi)" />
+        </div>
+
+        <div id="cardSection" style="display:none;">
+          <input type="text" id="cardNumber" placeholder="Enter Card Number" maxlength="16" />
+        </div>
+
+        <select id="deliveryMode">
+          <option value="Standard">Standard Delivery</option>
+          <option value="Express">Express Delivery</option>
+        </select>
+
+        <button type="submit">Complete Payment</button>
+      </form>
+
+      <div class="center" style="margin-top:16px;">
+        <a href="/customer-dashboard">⬅ Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
