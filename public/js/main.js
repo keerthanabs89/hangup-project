@@ -288,10 +288,24 @@ async function loadStoreRequests() {
 
           ${req.status === "Accepted" && req.acceptedBy === currentUser?.name
             ? `
-              <textarea id="msg-${req._id}" placeholder="Message for customer"></textarea>
-              <input type="number" id="price-${req._id}" placeholder="Final Price" />
-              <input type="file" id="img-${req._id}" />
-              <button onclick="curate('${req._id}')">Upload Curated Item</button>
+              <div style="margin-top: 1.5rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <h3>Curate this request</h3>
+                <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                  <div>
+                    <label for="msg-${req._id}" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message for customer</label>
+                    <textarea id="msg-${req._id}" placeholder="Share style tips or care details..." style="width: 100%; min-height: 80px; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;"></textarea>
+                  </div>
+                  <div>
+                    <label for="price-${req._id}" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Final Price (₹)</label>
+                    <input type="number" id="price-${req._id}" placeholder="Enter final price" min="1" step="1" style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;" />
+                  </div>
+                  <div>
+                    <label for="img-${req._id}" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Upload curated outfit image</label>
+                    <input type="file" id="img-${req._id}" style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px;" />
+                  </div>
+                  <button onclick="curate('${req._id}')" style="padding: 0.75rem 1.5rem; background: #0f172a; color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; font-size: 1rem;">Upload Curated Item</button>
+                </div>
+              </div>
             `
             : ""
           }
@@ -435,6 +449,16 @@ function selectPayment(method, el) {
 
   if (el) el.classList.add("active");
   toggleFields();
+
+  if (["PhonePe", "Google Pay", "Paytm"].includes(method)) {
+    showCheckoutMessage(`Selected ${method}. Enter your UPI ID and click Confirm payment.`, "info");
+  } else if (method === "Card") {
+    showCheckoutMessage("Selected card payment. Enter card details and confirm.", "info");
+  } else if (method === "Cash on Delivery") {
+    showCheckoutMessage("Selected Cash on Delivery. Confirm your order to place it.", "info");
+  } else {
+    showCheckoutMessage(`Selected ${method}.`, "info");
+  }
 }
 
 function showCheckoutMessage(message, type = "info") {
@@ -711,6 +735,13 @@ if (checkoutForm) {
       event.target.value = formatCardNumberInput(event.target.value);
     });
   }
+
+  document.querySelectorAll(".payment-option").forEach(option => {
+    option.addEventListener("click", () => {
+      const method = option.dataset.method;
+      selectPayment(method, option);
+    });
+  });
 
   checkoutForm.addEventListener("submit", async (e) => {
     e.preventDefault();

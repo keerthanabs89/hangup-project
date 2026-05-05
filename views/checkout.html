@@ -34,7 +34,7 @@
 
             <div class="section-title" style="margin-bottom:0.75rem;">Payment methods</div>
             <div class="payment-grid">
-              <div class="payment-option" onclick="selectPayment('PhonePe', this)">
+              <div class="payment-option" data-method="PhonePe" onclick="selectPayment('PhonePe', this)" role="button" tabindex="0">
                 <div class="payment-icon">📱</div>
                 <div>
                   <div class="payment-title">PhonePe</div>
@@ -42,7 +42,7 @@
                 </div>
               </div>
 
-              <div class="payment-option" onclick="selectPayment('Google Pay', this)">
+              <div class="payment-option" data-method="Google Pay" onclick="selectPayment('Google Pay', this)" role="button" tabindex="0">
                 <div class="payment-icon">🔵</div>
                 <div>
                   <div class="payment-title">Google Pay</div>
@@ -50,7 +50,7 @@
                 </div>
               </div>
 
-              <div class="payment-option" onclick="selectPayment('Paytm', this)">
+              <div class="payment-option" data-method="Paytm" onclick="selectPayment('Paytm', this)" role="button" tabindex="0">
                 <div class="payment-icon">🟦</div>
                 <div>
                   <div class="payment-title">Paytm</div>
@@ -58,7 +58,7 @@
                 </div>
               </div>
 
-              <div class="payment-option" onclick="selectPayment('Card', this)">
+              <div class="payment-option" data-method="Card" onclick="selectPayment('Card', this)" role="button" tabindex="0">
                 <div class="payment-icon">💳</div>
                 <div>
                   <div class="payment-title">Debit / Credit Card</div>
@@ -66,7 +66,7 @@
                 </div>
               </div>
 
-              <div class="payment-option" onclick="selectPayment('Cash on Delivery', this)">
+              <div class="payment-option" data-method="Cash on Delivery" onclick="selectPayment('Cash on Delivery', this)" role="button" tabindex="0">
                 <div class="payment-icon">💰</div>
                 <div>
                   <div class="payment-title">Cash on Delivery</div>
@@ -74,7 +74,7 @@
                 </div>
               </div>
 
-              <div class="payment-option" onclick="selectPayment('Net Banking', this)">
+              <div class="payment-option" data-method="Net Banking" onclick="selectPayment('Net Banking', this)" role="button" tabindex="0">
                 <div class="payment-icon">🏦</div>
                 <div>
                   <div class="payment-title">Net Banking</div>
@@ -90,7 +90,7 @@
               </div>
 
               <div id="upiAppNote" class="checkout-note" style="display:none; margin-top: 1rem;">
-                <p>On mobile, tapping Confirm will open your UPI app to complete the payment. If you are on desktop, a secure UPI checkout popup will appear.</p>
+                <p>Choose Paytm or PhonePe, enter your UPI ID, and click Confirm payment. On mobile, the Razorpay checkout will show UPI app options or you can use the button below.</p>
               </div>
 
               <div id="upiAppAction" style="display:none; margin-top: 1rem;">
