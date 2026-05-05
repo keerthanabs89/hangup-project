@@ -635,7 +635,19 @@ input::placeholder {
 }
 
 .payment-icon {
-  font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(99, 102, 241, 0.08);
+  border-radius: 12px;
+}
+
+.payment-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .payment-title {

@@ -611,7 +611,8 @@ function openRazorpayCheckout(orderData, paymentMethod, upiId, cardLast4, delive
     order_id: orderData.orderId,
     prefill: {
       name: user.name || "",
-      email: user.email || ""
+      email: user.email || "",
+      vpa: upiId || ""
     },
     notes: {
       paymentMethod,
@@ -650,9 +651,11 @@ function openRazorpayCheckout(orderData, paymentMethod, upiId, cardLast4, delive
     }
   };
 
+  const method = paymentMethod === "Card" ? "card" : paymentMethod === "Net Banking" ? "netbanking" : "upi";
+  options.method = method;
+
   options.modal = { escape: false, backdropclose: false };
   options.order_id = orderData.orderId;
-  options.handler = options.handler;
   const rzp = new Razorpay(options);
   rzp.open();
 }
@@ -763,19 +766,16 @@ function toggleFields() {
   const paymentInput = document.getElementById("paymentMethod");
   const upiSection = document.getElementById("upiSection");
   const cardSection = document.getElementById("cardSection");
-  const upiAppNote = document.getElementById("upiAppNote");
-  const upiAppAction = document.getElementById("upiAppAction");
 
-  if (!paymentInput || !upiSection || !cardSection || !upiAppNote || !upiAppAction) return;
+  if (!paymentInput || !upiSection || !cardSection) return;
 
   const method = paymentInput.value;
   const showUPI = method === "PhonePe" || method === "Google Pay" || method === "Paytm";
 
   upiSection.style.display = showUPI ? "block" : "none";
-  upiAppNote.style.display = showUPI ? "block" : "none";
-  upiAppAction.style.display = showUPI ? "block" : "none";
   cardSection.style.display = method === "Card" ? "block" : "none";
 }
+
 
 const checkoutForm = document.getElementById("checkoutForm");
 
