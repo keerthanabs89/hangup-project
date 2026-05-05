@@ -7,74 +7,30 @@
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-  <header>
-    <h1>🚀 Join HANG UP</h1>
-    <p>Create your account and start today</p>
-  </header>
+  <main class="auth-shell">
+    <div class="auth-card">
+      <div class="auth-logo"><span>HU</span>HANG UP</div>
+      <h2>Create account</h2>
+      <p class="auth-subline">Sign up as a customer or store owner.</p>
 
-  <main class="page-shell">
-    <div class="container">
-      <div class="card form-card">
-        <h2 class="center">Create Your Account</h2>
+      <div id="signupMessage" class="message"></div>
 
-        <div id="signupMessage" class="message"></div>
+      <form id="signupForm">
+        <input type="text" id="signupName" placeholder="Full Name" required />
+        <input type="email" id="signupEmail" placeholder="Email Address" required />
+        <input type="password" id="signupPassword" placeholder="Password" required />
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
+        <select id="signupRole" required>
+          <option value="">Select your role</option>
+          <option value="customer">Customer</option>
+          <option value="store">Store Owner</option>
+        </select>
+        <button type="submit" id="signupBtn">Sign Up</button>
+      </form>
 
-        <form id="signupForm">
-          <input type="text" id="signupName" placeholder="Full Name" required />
-          <input type="email" id="signupEmail" placeholder="Email Address" required />
-
-          <div>
-            <input
-              type="password"
-              id="signupPassword"
-              placeholder="Create a strong password"
-              required
-            />
-            <div class="password-strength" id="passwordStrength"></div>
-            <div class="password-requirements" id="passwordRequirements">
-              <div class="requirement" id="req-length">
-                <span class="requirement-check">✓</span>
-                At least 8 characters
-              </div>
-              <div class="requirement" id="req-uppercase">
-                <span class="requirement-check">✓</span>
-                One uppercase letter (A-Z)
-              </div>
-              <div class="requirement" id="req-lowercase">
-                <span class="requirement-check">✓</span>
-                One lowercase letter (a-z)
-              </div>
-              <div class="requirement" id="req-number">
-                <span class="requirement-check">✓</span>
-                One number (0-9)
-              </div>
-              <div class="requirement" id="req-special">
-                <span class="requirement-check">✓</span>
-                One special character (!@#$%^&*)
-              </div>
-            </div>
-          </div>
-
-          <input
-            type="password"
-            id="signupConfirmPassword"
-            placeholder="Confirm Password"
-            required
-          />
-
-          <select id="signupRole" required>
-            <option value="">Select your role</option>
-            <option value="customer">Customer</option>
-            <option value="store">Store Owner</option>
-          </select>
-
-          <button type="submit" id="signupBtn">Create Account</button>
-        </form>
-
-        <p class="center text-small" style="margin-top: 1.5rem;">
-          Already have an account? <a href="/login">Login here</a>
-        </p>
-      </div>
+      <p class="center text-small" style="margin-top: 1.5rem;">
+        Already have an account? <a href="/login">Login</a>
+      </p>
     </div>
   </main>
 

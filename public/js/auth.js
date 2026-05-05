@@ -37,21 +37,31 @@ function updatePasswordStrength() {
     special: /[!@#$%^&*]/.test(password)
   };
 
-  // Update requirement indicators
+  // Update requirement indicators only when the fields exist.
   updateRequirement('req-length', requirements.length);
   updateRequirement('req-uppercase', requirements.uppercase);
   updateRequirement('req-lowercase', requirements.lowercase);
   updateRequirement('req-number', requirements.number);
   updateRequirement('req-special', requirements.special);
 
-  // Update strength bars
   const metRequirements = Object.values(requirements).filter(r => r).length;
   const strengthContainer = document.getElementById('passwordStrength');
-  strengthContainer.innerHTML = '';
+  if (strengthContainer) {
+    strengthContainer.innerHTML = '';
 
-  let strength = 'weak';
-  if (metRequirements >= 4) strength = 'strong';
-  else if (metRequirements >= 3) strength = 'medium';
+    let strength = 'weak';
+    if (metRequirements >= 4) strength = 'strong';
+    else if (metRequirements >= 3) strength = 'medium';
+
+    for (let i = 0; i < 5; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'strength-bar';
+      if (i < metRequirements) {
+        bar.classList.add(strength);
+      }
+      strengthContainer.appendChild(bar);
+    }
+  }
 
   for (let i = 0; i < 5; i++) {
     const bar = document.createElement('div');

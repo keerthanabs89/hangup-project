@@ -172,30 +172,32 @@ async function loadMyRequests() {
 
     data.forEach(req => {
       const card = `
-        <div class="card request-card">
-          <div class="badge-row">
-            <span class="mini-badge">${req.category}</span>
-            <span class="status ${req.status.toLowerCase()}">${req.status}</span>
+        <div class="card request-card" onclick="toggleRequestDetails(event)">
+          <div class="request-summary">
+            <div class="badge-row">
+              <span class="mini-badge">${req.category}</span>
+              <span class="status ${req.status.toLowerCase()}">${req.status}</span>
+            </div>
+            <div class="tile-row">
+              <strong>${req.style}</strong>
+              <span>₹${req.budget}</span>
+            </div>
+            <div class="tile-meta">Size ${req.size} · ${req.acceptedBy || "No store yet"}</div>
           </div>
 
-          ${req.image ? `<img src="/uploads/${req.image}" alt="Request Image" />` : ""}
-
-          <p><strong>Style:</strong> ${req.style}</p>
-          <p><strong>Budget:</strong> ₹${req.budget}</p>
-          <p><strong>Size:</strong> ${req.size}</p>
-          <p><strong>Accepted By:</strong> ${req.acceptedBy || "Waiting..."}</p>
-
-          ${req.curatedImage ? `<h4>✨ Curated Outfit</h4><img src="/uploads/${req.curatedImage}" alt="Curated Outfit" />` : ""}
-          ${req.storeMessage ? `<p><strong>Store Message:</strong> ${req.storeMessage}</p>` : ""}
-          ${req.curatedPrice ? `<p><strong>Final Price:</strong> ₹${req.curatedPrice}</p>` : ""}
-          ${req.paymentMethod ? `<p><strong>Payment Method:</strong> ${req.paymentMethod}</p>` : ""}
-          ${req.paymentStatus ? `<p><strong>Payment Status:</strong> ${req.paymentStatus}</p>` : ""}
-          ${req.deliveryMode ? `<p><strong>Delivery:</strong> ${req.deliveryMode}</p>` : ""}
-
-          ${req.status === "Curated" && req.paymentStatus === "Unpaid"
-            ? `<button onclick="goToCheckout('${req._id}')">💳 Pay Now</button>`
-            : ""
-          }
+          <div class="request-details">
+            ${req.image ? `<img src="/uploads/${req.image}" alt="Request Image" />` : ""}
+            ${req.curatedImage ? `<p><strong>Curated Item:</strong> Available</p>` : ""}
+            ${req.storeMessage ? `<p><strong>Store Message:</strong> ${req.storeMessage}</p>` : ""}
+            ${req.curatedPrice ? `<p><strong>Final Price:</strong> ₹${req.curatedPrice}</p>` : ""}
+            ${req.paymentMethod ? `<p><strong>Payment Method:</strong> ${req.paymentMethod}</p>` : ""}
+            ${req.paymentStatus ? `<p><strong>Payment Status:</strong> ${req.paymentStatus}</p>` : ""}
+            ${req.deliveryMode ? `<p><strong>Delivery:</strong> ${req.deliveryMode}</p>` : ""}
+            ${req.status === "Curated" && req.paymentStatus === "Unpaid"
+              ? `<button onclick="event.stopPropagation(); goToCheckout('${req._id}')">💳 Pay Now</button>`
+              : ""
+            }
+          </div>
         </div>
       `;
 
@@ -262,63 +264,66 @@ async function loadStoreRequests() {
 
     data.forEach(req => {
       const card = `
-        <div class="card request-card">
-          <div class="badge-row">
-            <span class="mini-badge">${req.category}</span>
-            <span class="status ${req.status.toLowerCase()}">${req.status}</span>
+        <div class="card request-card" onclick="toggleRequestDetails(event)">
+          <div class="request-summary">
+            <div class="badge-row">
+              <span class="mini-badge">${req.category}</span>
+              <span class="status ${req.status.toLowerCase()}">${req.status}</span>
+            </div>
+            <div class="tile-row">
+              <strong>${req.style}</strong>
+              <span>₹${req.budget}</span>
+            </div>
+            <div class="tile-meta">Customer: ${req.customerName}</div>
           </div>
 
-          <p><strong>Customer:</strong> ${req.customerName}</p>
-          ${req.image ? `<img src="/uploads/${req.image}" alt="Customer Request" />` : ""}
-          <p><strong>Style:</strong> ${req.style}</p>
-          <p><strong>Budget:</strong> ₹${req.budget}</p>
-          <p><strong>Size:</strong> ${req.size}</p>
-
-          ${req.paymentMethod ? `<p><strong>Payment Method:</strong> ${req.paymentMethod}</p>` : ""}
-          ${req.paymentStatus ? `<p><strong>Payment Status:</strong> ${req.paymentStatus}</p>` : ""}
-          ${req.storeEarning ? `<p><strong>Your Earning:</strong> ₹${req.storeEarning}</p>` : ""}
-
-          ${req.status === "Pending"
-            ? `
-              <button onclick="acceptRequest('${req._id}')">Accept</button>
-              <button class="danger-btn" onclick="rejectRequest('${req._id}')">Reject</button>
-            `
-            : ""
-          }
-
-          ${req.status === "Accepted" && req.acceptedBy === currentUser?.name
-            ? `
-              <div style="margin-top: 1.5rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
-                <h3>Curate this request</h3>
-                <div style="display: grid; gap: 1rem; margin-top: 1rem;">
-                  <div>
-                    <label for="msg-${req._id}" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message for customer</label>
-                    <textarea id="msg-${req._id}" placeholder="Share style tips or care details..." style="width: 100%; min-height: 80px; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;"></textarea>
-                  </div>
-                  <div>
-                    <label for="price-${req._id}" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Final Price (₹)</label>
-                    <input type="number" id="price-${req._id}" placeholder="Enter final price" min="1" step="1" style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;" />
-                  </div>
-                  <div>
-                    <label for="img-${req._id}" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Upload curated outfit image</label>
-                    <input type="file" id="img-${req._id}" style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px;" />
-                  </div>
-                  <button onclick="curate('${req._id}')" style="padding: 0.75rem 1.5rem; background: #0f172a; color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; font-size: 1rem;">Upload Curated Item</button>
+          <div class="request-details">
+            ${req.image ? `<img src="/uploads/${req.image}" alt="Customer Request" />` : ""}
+            <p><strong>Size:</strong> ${req.size}</p>
+            ${req.paymentMethod ? `<p><strong>Payment Method:</strong> ${req.paymentMethod}</p>` : ""}
+            ${req.paymentStatus ? `<p><strong>Payment Status:</strong> ${req.paymentStatus}</p>` : ""}
+            ${req.storeEarning ? `<p><strong>Your Earning:</strong> ₹${req.storeEarning}</p>` : ""}
+            ${req.status === "Pending"
+              ? `
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem;">
+                  <button onclick="event.stopPropagation(); acceptRequest('${req._id}')">Accept</button>
+                  <button class="danger-btn" onclick="event.stopPropagation(); rejectRequest('${req._id}')">Reject</button>
                 </div>
-              </div>
-            `
-            : ""
-          }
-
-          ${req.curatedImage ? `<h4>✨ Curated Item</h4><img src="/uploads/${req.curatedImage}" alt="Curated Item" />` : ""}
-          ${req.storeMessage ? `<p><strong>Store Message:</strong> ${req.storeMessage}</p>` : ""}
-          ${req.curatedPrice ? `<p><strong>Curated Price:</strong> ₹${req.curatedPrice}</p>` : ""}
-          ${req.adminCommission ? `<p><strong>Admin Commission:</strong> ₹${req.adminCommission}</p>` : ""}
-
-          ${req.status === "Paid" && req.acceptedBy === currentUser?.name
-            ? `<button onclick="markShipped('${req._id}')">📦 Mark as Shipped</button>`
-            : ""
-          }
+              `
+              : ""
+            }
+            ${req.status === "Accepted" && req.acceptedBy === currentUser?.name
+              ? `
+                <div style="margin-top: 1rem; padding: 1rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                  <h4 style="margin: 0 0 0.75rem;">Curate this request</h4>
+                  <div style="display: grid; gap: 1rem;">
+                    <div>
+                      <label for="msg-${req._id}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Message</label>
+                      <textarea id="msg-${req._id}" placeholder="Share the curated details..." style="width:100%; min-height:76px; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;"></textarea>
+                    </div>
+                    <div>
+                      <label for="price-${req._id}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Final Price</label>
+                      <input type="number" id="price-${req._id}" placeholder="₹Enter final price" min="1" step="1" style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+                    </div>
+                    <div>
+                      <label for="img-${req._id}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Image</label>
+                      <input type="file" id="img-${req._id}" style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+                    </div>
+                    <button onclick="event.stopPropagation(); curate('${req._id}')" style="padding:0.75rem 1rem; background:#0f172a; color:white; border:none; border-radius:8px; cursor:pointer;">Upload Curated Item</button>
+                  </div>
+                </div>
+              `
+              : ""
+            }
+            ${req.curatedImage ? `<p><strong>Curated Image:</strong> Uploaded</p>` : ""}
+            ${req.storeMessage ? `<p><strong>Store Message:</strong> ${req.storeMessage}</p>` : ""}
+            ${req.curatedPrice ? `<p><strong>Curated Price:</strong> ₹${req.curatedPrice}</p>` : ""}
+            ${req.adminCommission ? `<p><strong>Admin Commission:</strong> ₹${req.adminCommission}</p>` : ""}
+            ${req.status === "Paid" && req.acceptedBy === currentUser?.name
+              ? `<button onclick="event.stopPropagation(); markShipped('${req._id}')">📦 Mark as Shipped</button>`
+              : ""
+            }
+          </div>
         </div>
       `;
 
@@ -881,23 +886,28 @@ async function loadAdminDashboard() {
     } else {
       requests.forEach(req => {
         requestsBox.innerHTML += `
-          <div class="card request-card">
-            <div class="badge-row">
-              <span class="mini-badge">${req.category}</span>
-              <span class="status ${req.status.toLowerCase()}">${req.status}</span>
+          <div class="card request-card" onclick="toggleRequestDetails(event)">
+            <div class="request-summary">
+              <div class="badge-row">
+                <span class="mini-badge">${req.category}</span>
+                <span class="status ${req.status.toLowerCase()}">${req.status}</span>
+              </div>
+              <div class="tile-row">
+                <strong>${req.style}</strong>
+                <span>₹${req.budget}</span>
+              </div>
+              <div class="tile-meta">Customer: ${req.customerName || 'Unknown'}</div>
             </div>
-
-            <p><strong>Customer:</strong> ${req.customerName}</p>
-            ${req.image ? `<img src="/uploads/${req.image}" alt="Request Image" />` : ""}
-            <p><strong>Style:</strong> ${req.style}</p>
-            <p><strong>Budget:</strong> ₹${req.budget}</p>
-            <p><strong>Size:</strong> ${req.size}</p>
-            ${req.acceptedBy ? `<p><strong>Accepted By:</strong> ${req.acceptedBy}</p>` : ""}
-            ${req.curatedPrice ? `<p><strong>Curated Price:</strong> ₹${req.curatedPrice}</p>` : ""}
-            ${req.adminCommission ? `<p><strong>Admin Profit:</strong> ₹${req.adminCommission}</p>` : ""}
-            ${req.storeEarning ? `<p><strong>Store Earning:</strong> ₹${req.storeEarning}</p>` : ""}
-            ${req.paymentMethod ? `<p><strong>Payment:</strong> ${req.paymentMethod}</p>` : ""}
-            ${req.paymentStatus ? `<p><strong>Payment Status:</strong> ${req.paymentStatus}</p>` : ""}
+            <div class="request-details">
+              ${req.image ? `<img src="/uploads/${req.image}" alt="Request Image" />` : ""}
+              <p><strong>Size:</strong> ${req.size}</p>
+              ${req.acceptedBy ? `<p><strong>Accepted By:</strong> ${req.acceptedBy}</p>` : ""}
+              ${req.curatedPrice ? `<p><strong>Curated Price:</strong> ₹${req.curatedPrice}</p>` : ""}
+              ${req.adminCommission ? `<p><strong>Admin Profit:</strong> ₹${req.adminCommission}</p>` : ""}
+              ${req.storeEarning ? `<p><strong>Store Earning:</strong> ₹${req.storeEarning}</p>` : ""}
+              ${req.paymentMethod ? `<p><strong>Payment:</strong> ${req.paymentMethod}</p>` : ""}
+              ${req.paymentStatus ? `<p><strong>Payment Status:</strong> ${req.paymentStatus}</p>` : ""}
+            </div>
           </div>
         `;
       });
@@ -921,6 +931,12 @@ function logout() {
   window.location.href = "/login";
 }
 
+function toggleRequestDetails(event) {
+  const card = event.currentTarget;
+  if (!card || !card.classList.contains('request-card')) return;
+  card.classList.toggle('open');
+}
+
 function toggleSection(id) {
   const section = document.getElementById(id);
   if (!section) return;
@@ -933,14 +949,10 @@ function toggleSection(id) {
 window.onload = () => {
   if (document.getElementById("pendingRequests")) {
     loadMyRequests();
-    document.getElementById("pendingRequests").classList.add("active");
-    document.getElementById("acceptedRequests")?.classList.add("active");
   }
 
   if (document.getElementById("newStoreRequests")) {
     loadStoreRequests();
-    document.getElementById("newStoreRequests").classList.add("active");
-    document.getElementById("acceptedStoreRequests")?.classList.add("active");
   }
 
   if (document.getElementById("allUsers")) {
