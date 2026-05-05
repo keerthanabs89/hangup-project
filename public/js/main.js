@@ -519,21 +519,26 @@ async function loadCheckoutSummary() {
 async function createRazorpayOrder(id, paymentMethod, deliveryMode) {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`/api/requests/checkout/order/${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token
-    },
-    body: JSON.stringify({ paymentMethod, deliveryMode })
-  });
+  try {
+    const res = await fetch(`/api/requests/checkout/order/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({ paymentMethod, deliveryMode })
+    });
 
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.message || "Unable to create payment order.");
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || "Unable to create payment order.");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Order creation failed:", err);
+    throw err;
   }
-
-  return await res.json();
 }
 
 async function verifyRazorpayPayment(id, payload) {
@@ -812,9 +817,12 @@ if (checkoutForm) {
         return;
       }
 
+      console.log('Creating Razorpay order...');
       const orderData = await createRazorpayOrder(id, method, deliveryMode);
+      console.log('Order data received:', orderData);
       orderData.requestId = id;
 
+      console.log('Opening Razorpay checkout...');
       openRazorpayCheckout(orderData, method, upiId, cardLast4, deliveryMode);
     } catch (err) {
       console.error("Checkout Error:", err);
