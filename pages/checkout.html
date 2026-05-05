@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HANG UP - Checkout & Payment</title>
+    <link rel="stylesheet" href="../styles/modern.css">
+    <style>
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .checkout-main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xxl);
+            position: relative;
+        }
+
+        .progress-tracker::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border);
+            z-index: -1;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active .progress-circle {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .progress-step.completed .progress-circle {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .progress-label {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .progress-step.active .progress-label {
+            color: var(--primary);
+        }
+
+        .checkout-section {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .checkout-section h2 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--background);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .address-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .address-item {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .address-item:hover {
+            border-color: var(--primary);
+            background-color: #FFF8F3;
+        }
+
+        .address-item.selected {
+            border-color: var(--primary);
+            background-color: #FFF8F3;
+        }
+
+        .address-item input[type="radio"] {
+            margin-right: var(--spacing-md);
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .payment-option {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background-color: #FFF8F3;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .payment-option input[type="radio"] {
+            display: none;
+        }
+
+        .payment-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .payment-name {
+            font-weight: 600;
+            font-size: var(--font-size-base);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .payment-desc {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .payment-option.selected .payment-name {
+            color: var(--primary);
+        }
+
+        /* Order Summary Sidebar */
+        .order-summary {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .order-summary h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--background);
+        }
+
+        .order-item-details {
+            flex: 1;
+        }
+
+        .order-item-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .order-item-qty {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .order-item-price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .order-summary-divider {
+            border-top: 2px solid var(--background);
+            margin: var(--spacing-lg) 0;
+            padding-top: var(--spacing-lg);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-base);
+        }
+
+        .summary-row.total {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--primary);
+            border-top: 2px solid var(--background);
+            padding-top: var(--spacing-md);
+        }
+
+        .security-badges {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .badge-icon {
+            font-size: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: var(--spacing-lg);
+            border-bottom: 2px solid var(--border);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .tab {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .progress-tracker {
+                flex-wrap: wrap;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-section {
+                padding: var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-logo">🛍️ HANG UP</div>
+        <div style="flex: 1;"></div>
+        <button class="btn btn-outline" onclick="window.history.back()">← Back to Shop</button>
+    </nav>
+
+    <!-- Main Checkout Container -->
+    <div class="container">
+        <div class="checkout-container">
+            <!-- Main Checkout Form -->
+            <div class="checkout-main">
+                <!-- Progress Tracker -->
+                <div class="progress-tracker">
+                    <div class="progress-step completed">
+                        <div class="progress-circle">✓</div>
+                        <div class="progress-label">Cart</div>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="progress-circle">1</div>
+                        <div class="progress-label">Shipping</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">2</div>
+                        <div class="progress-label">Payment</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">3</div>
+                        <div class="progress-label">Confirmation</div>
+                    </div>
+                </div>
+
+                <!-- Shipping Section -->
+                <div class="checkout-section">
+                    <h2>Shipping Address</h2>
+                    
+                    <form id="shippingForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" name="address" placeholder="123 Main Street" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" id="state" name="state" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pincode">Pincode</label>
+                                <input type="text" id="pincode" name="pincode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-outline" style="width: 100%; margin-bottom: var(--spacing-lg);">
+                            + Add Another Address
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Shipping Method -->
+                <div class="checkout-section">
+                    <h2>Shipping Method</h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                        <label style="display: flex; align-items: center; padding: var(--spacing-lg); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="shipping" value="standard" checked>
+                            <span style="margin-left: var(--spacing-md);">
+                                <strong>Standard Shipping</strong> - 5-7 business days<br>
+                                <span style="color: var(--text-secondary);">Free</span>
+                            </span>
+                        </label>
+                        <label style="display: flex; align-items: center; padding: var(--spacing-lg); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="shipping" value="express">
+                            <span style="margin-left: var(--spacing-md);">
+                                <strong>Express Shipping</strong> - 2-3 business days<br>
+                                <span style="color: var(--text-secondary);">₹99</span>
+                            </span>
+                        </label>
+                        <label style="display: flex; align-items: center; padding: var(--spacing-lg); border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="shipping" value="overnight">
+                            <span style="margin-left: var(--spacing-md);">
+                                <strong>Overnight Delivery</strong> - Next day<br>
+                                <span style="color: var(--text-secondary);">₹299</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="checkout-section">
+                    <h2>Payment Method</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                        Choose your preferred payment method
+                    </p>
+
+                    <div class="payment-methods">
+                        <!-- Paytm -->
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="paytm" checked onchange="selectPayment('paytm')">
+                            <div class="payment-icon">💳</div>
+                            <div class="payment-name">Paytm</div>
+                            <div class="payment-desc">UPI & Wallet</div>
+                        </label>
+
+                        <!-- PhonePe -->
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="phonepe" onchange="selectPayment('phonepe')">
+                            <div class="payment-icon">📱</div>
+                            <div class="payment-name">PhonePe</div>
+                            <div class="payment-desc">Quick Payment</div>
+                        </label>
+
+                        <!-- Google Pay -->
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="googlepay" onchange="selectPayment('googlepay')">
+                            <div class="payment-icon">🔵</div>
+                            <div class="payment-name">Google Pay</div>
+                            <div class="payment-desc">Secure Payment</div>
+                        </label>
+
+                        <!-- Credit/Debit Card -->
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="card" onchange="selectPayment('card')">
+                            <div class="payment-icon">💰</div>
+                            <div class="payment-name">Card</div>
+                            <div class="payment-desc">Credit/Debit</div>
+                        </label>
+
+                        <!-- UPI -->
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="upi" onchange="selectPayment('upi')">
+                            <div class="payment-icon">🏦</div>
+                            <div class="payment-name">UPI</div>
+                            <div class="payment-desc">Direct Transfer</div>
+                        </label>
+
+                        <!-- Net Banking -->
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="netbanking" onchange="selectPayment('netbanking')">
+                            <div class="payment-icon">🏛️</div>
+                            <div class="payment-name">Net Banking</div>
+                            <div class="payment-desc">Bank Transfer</div>
+                        </label>
+                    </div>
+
+                    <!-- Payment Details Form -->
+                    <div id="paytmDetails" class="tab-content active">
+                        <div class="form-group">
+                            <label>Paytm Phone Number</label>
+                            <input type="tel" placeholder="Enter your Paytm registered phone number">
+                        </div>
+                    </div>
+
+                    <div id="phonepeDetails" class="tab-content">
+                        <div class="form-group">
+                            <label>PhonePe Phone Number</label>
+                            <input type="tel" placeholder="Enter your PhonePe registered number">
+                        </div>
+                    </div>
+
+                    <div id="cardDetails" class="tab-content">
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="upiDetails" class="tab-content">
+                        <div class="form-group">
+                            <label>UPI ID</label>
+                            <input type="text" placeholder="yourname@bank">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Place Order Button -->
+                <button class="btn btn-primary btn-large" onclick="placeOrder()" style="width: 100%; padding: var(--spacing-lg); font-size: var(--font-size-lg);">
+                    Complete Payment - ₹3,547
+                </button>
+            </div>
+
+            <!-- Order Summary Sidebar -->
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+
+                <div class="order-item">
+                    <div class="order-item-details">
+                        <div class="order-item-name">Elegant Dress</div>
+                        <div class="order-item-qty">Qty: 1 | Size: M</div>
+                    </div>
+                    <div class="order-item-price">₹1,499</div>
+                </div>
+
+                <div class="order-item">
+                    <div class="order-item-details">
+                        <div class="order-item-name">Casual T-Shirt</div>
+                        <div class="order-item-qty">Qty: 2 | Size: M</div>
+                    </div>
+                    <div class="order-item-price">₹1,198</div>
+                </div>
+
+                <div class="order-item">
+                    <div class="order-item-details">
+                        <div class="order-item-name">Silk Scarf</div>
+                        <div class="order-item-qty">Qty: 1</div>
+                    </div>
+                    <div class="order-item-price">₹449</div>
+                </div>
+
+                <div class="order-summary-divider"></div>
+
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>₹3,146</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span>Free</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Tax:</span>
+                    <span>₹401</span>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span>₹3,547</span>
+                </div>
+
+                <!-- Security Badges -->
+                <div class="security-badges">
+                    <div>
+                        <div class="badge-icon">🔒</div>
+                        <div>SSL Secure</div>
+                    </div>
+                    <div>
+                        <div class="badge-icon">✓</div>
+                        <div>Verified</div>
+                    </div>
+                    <div>
+                        <div class="badge-icon">🛡️</div>
+                        <div>Protected</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--border); font-size: var(--font-size-sm); color: var(--text-secondary);">
+                    ✓ 30-day returns<br>
+                    ✓ Free exchanges<br>
+                    ✓ Money-back guarantee
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectPayment(method) {
+            // Hide all payment details
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Hide all payment options' selected state
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Show relevant payment details
+            const detailsId = method + 'Details';
+            const detailsEl = document.getElementById(detailsId);
+            if (detailsEl) {
+                detailsEl.classList.add('active');
+            }
+
+            // Mark selected payment option
+            document.querySelector(`input[value="${method}"]`).parentElement.classList.add('selected');
+        }
+
+        function placeOrder() {
+            const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+            alert(`Processing payment via ${selectedPayment.toUpperCase()}... 💳\n\nYou will be redirected to complete the payment!`);
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                alert('✅ Payment Successful!\nYour order has been confirmed.\nOrder ID: HANG#123456');
+                window.location.href = 'shop.html';
+            }, 2000);
+        }
+
+        // Initialize payment selection
+        document.querySelector('input[value="paytm"]').parentElement.classList.add('selected');
+    </script>
+</body>
+</html>
