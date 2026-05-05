@@ -11,32 +11,34 @@
     <p>Platform analytics, users, orders and profits</p>
   </header>
 
-  <div class="container">
-    <div class="topbar">
-      <div>
-        <h2 class="page-heading">Admin Control Panel</h2>
-        <p class="subtext">Track users, requests, platform profit and sales</p>
+  <main class="page-shell">
+    <section class="card">
+      <div class="topbar">
+        <div>
+          <h2 class="page-heading">Admin Control Panel</h2>
+          <p class="subtext">Track users, requests, platform profit and sales</p>
+        </div>
+        <button onclick="logout()">Logout</button>
       </div>
-      <button onclick="logout()">Logout</button>
-    </div>
 
-    <div class="stats-grid">
+      <div class="stats-grid">
       <div class="stat-card"><h3>Total Users</h3><p id="totalUsers">0</p></div>
       <div class="stat-card"><h3>Total Requests</h3><p id="totalRequests">0</p></div>
       <div class="stat-card"><h3>Paid Orders</h3><p id="paidCount">0</p></div>
       <div class="stat-card"><h3>Platform Profit</h3><p id="platformProfit">₹0</p></div>
     </div>
+    </section>
 
-    <div class="card">
-      <h2 class="section-title">👥 All Users</h2>
+    <section class="card">
+      <div class="section-title">👥 All Users</div>
       <div id="allUsers" class="admin-list"></div>
-    </div>
+    </section>
 
-    <div class="card">
-      <h2 class="section-title">📋 All Requests</h2>
+    <section class="card">
+      <div class="section-title">📋 All Requests</div>
       <div id="allRequests" class="grid"></div>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script src="/js/main.js"></script>
 </body>

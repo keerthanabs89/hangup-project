@@ -11,23 +11,29 @@
     <p>Manage all customer requests and your earnings</p>
   </header>
 
-  <div class="container">
-    <div class="topbar">
-      <div>
-        <h2 class="page-heading">Store Control Panel</h2>
-        <p class="subtext">Accept, curate, ship and track earnings</p>
+  <main class="page-shell">
+    <section class="card">
+      <div class="topbar">
+        <div>
+          <h2 class="page-heading">Store Control Panel</h2>
+          <p class="subtext">Accept, curate, ship and track earnings</p>
+        </div>
+        <button onclick="logout()">Logout</button>
       </div>
-      <button onclick="logout()">Logout</button>
-    </div>
 
-    <div class="stats-grid">
+      <div class="stats-grid">
       <div class="stat-card"><h3>Total Orders</h3><p id="storeTotalOrders">0</p></div>
       <div class="stat-card"><h3>Accepted</h3><p id="storeAcceptedCount">0</p></div>
       <div class="stat-card"><h3>Paid</h3><p id="storePaidCount">0</p></div>
       <div class="stat-card"><h3>My Earnings</h3><p id="storeTotalEarnings">₹0</p></div>
     </div>
+    </section>
 
-    <div class="accordion">
+    <section class="card">
+      <div class="section-title">Request workflow</div>
+      <p class="section-intro">Open a group to manage orders by status.</p>
+
+      <div class="accordion">
       <div class="accordion-header" onclick="toggleSection('newStoreRequests')">🆕 New Requests</div>
       <div id="newStoreRequests" class="accordion-content grid"></div>
 
@@ -46,7 +52,8 @@
       <div class="accordion-header" onclick="toggleSection('rejectedStoreRequests')">❌ Rejected</div>
       <div id="rejectedStoreRequests" class="accordion-content grid"></div>
     </div>
-  </div>
+    </section>
+  </main>
 
   <script src="/js/main.js"></script>
 </body>

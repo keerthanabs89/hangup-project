@@ -67,9 +67,21 @@ const requestSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+    paymentGateway: {
+      type: String,
+      default: ""
+    },
+    transactionId: {
+      type: String,
+      default: ""
+    },
     paymentStatus: {
       type: String,
       default: "Unpaid"
+    },
+    paymentOrderId: {
+      type: String,
+      default: ""
     },
     upiId: {
       type: String,

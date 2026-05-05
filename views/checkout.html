@@ -9,78 +9,148 @@
 <body>
   <header>
     <h1>💳 Secure Checkout</h1>
-    <p>Complete your payment safely and securely</p>
+    <p>Complete your payment safely with a smooth UPI or card flow.</p>
   </header>
 
-  <div class="container">
-    <div class="card form-card">
-      <h2 class="center">Select Payment Method</h2>
+  <main class="page-shell">
+    <section class="card form-card">
+      <div class="section-title">Checkout</div>
+      <p class="section-intro">Choose a payment method, enter your details, and confirm the order.</p>
 
       <div id="checkoutMessage" class="message"></div>
+
+      <div id="checkoutOrderTitle" class="section-intro">Loading order details…</div>
 
       <form id="checkoutForm">
         <input type="hidden" id="paymentMethod" />
 
-        <div class="payment-grid">
-          <div class="payment-option" onclick="selectPayment('PhonePe', this)">
-            <div class="payment-icon">📱</div>
-            <div class="payment-title">PhonePe</div>
+        <div class="checkout-layout">
+          <div>
+            <div class="checkout-stepper">
+              <span class="step-label">Step 2 of 2</span>
+              <h3>Secure payment</h3>
+              <p class="text-small">Review your order and payment details before confirming.</p>
+            </div>
+
+            <div class="section-title" style="margin-bottom:0.75rem;">Payment methods</div>
+            <div class="payment-grid">
+              <div class="payment-option" onclick="selectPayment('PhonePe', this)">
+                <div class="payment-icon">📱</div>
+                <div>
+                  <div class="payment-title">PhonePe</div>
+                  <p class="payment-description">Fast UPI payment with PhonePe credentials.</p>
+                </div>
+              </div>
+
+              <div class="payment-option" onclick="selectPayment('Google Pay', this)">
+                <div class="payment-icon">🔵</div>
+                <div>
+                  <div class="payment-title">Google Pay</div>
+                  <p class="payment-description">Send payment instantly using your Google Pay VPA.</p>
+                </div>
+              </div>
+
+              <div class="payment-option" onclick="selectPayment('Paytm', this)">
+                <div class="payment-icon">🟦</div>
+                <div>
+                  <div class="payment-title">Paytm</div>
+                  <p class="payment-description">Use Paytm UPI for easy checkout processing.</p>
+                </div>
+              </div>
+
+              <div class="payment-option" onclick="selectPayment('Card', this)">
+                <div class="payment-icon">💳</div>
+                <div>
+                  <div class="payment-title">Debit / Credit Card</div>
+                  <p class="payment-description">Visa, Mastercard, or Rupay cards accepted.</p>
+                </div>
+              </div>
+
+              <div class="payment-option" onclick="selectPayment('Cash on Delivery', this)">
+                <div class="payment-icon">💰</div>
+                <div>
+                  <div class="payment-title">Cash on Delivery</div>
+                  <p class="payment-description">Pay when your order arrives.</p>
+                </div>
+              </div>
+
+              <div class="payment-option" onclick="selectPayment('Net Banking', this)">
+                <div class="payment-icon">🏦</div>
+                <div>
+                  <div class="payment-title">Net Banking</div>
+                  <p class="payment-description">Complete payment through your bank portal.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-details">
+              <div id="upiSection" style="display:none;">
+                <label for="upiId">UPI ID</label>
+                <input type="text" id="upiId" placeholder="example@okaxis" autocomplete="off" />
+              </div>
+
+              <div id="upiAppNote" class="checkout-note" style="display:none; margin-top: 1rem;">
+                <p>On mobile, tapping Confirm will open your UPI app to complete the payment. If you are on desktop, a secure UPI checkout popup will appear.</p>
+              </div>
+
+              <div id="upiAppAction" style="display:none; margin-top: 1rem;">
+                <button type="button" class="button secondary" id="openUpiAppButton">Open UPI app</button>
+              </div>
+
+              <div id="cardSection" style="display:none;">
+                <label for="cardNumber">Card number</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="off" />
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div>
+                    <label for="cardExpiry">Expiry date</label>
+                    <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" autocomplete="off" />
+                  </div>
+                  <div>
+                    <label for="cardCVV">CVV</label>
+                    <input type="password" id="cardCVV" placeholder="123" maxlength="4" autocomplete="off" />
+                  </div>
+                </div>
+              </div>
+
+              <label for="deliveryMode">Delivery preference</label>
+              <select id="deliveryMode">
+                <option value="Standard">Standard delivery (5-7 days)</option>
+                <option value="Express">Express delivery (2-3 days)</option>
+                <option value="Overnight">Overnight delivery</option>
+              </select>
+            </div>
+
+            <button type="submit" id="checkoutBtn">Confirm payment</button>
           </div>
 
-          <div class="payment-option" onclick="selectPayment('Google Pay', this)">
-            <div class="payment-icon">🔵</div>
-            <div class="payment-title">Google Pay</div>
-          </div>
-
-          <div class="payment-option" onclick="selectPayment('Paytm', this)">
-            <div class="payment-icon">🟦</div>
-            <div class="payment-title">Paytm</div>
-          </div>
-
-          <div class="payment-option" onclick="selectPayment('Card', this)">
-            <div class="payment-icon">💳</div>
-            <div class="payment-title">Debit Card</div>
-          </div>
-
-          <div class="payment-option" onclick="selectPayment('Cash on Delivery', this)">
-            <div class="payment-icon">💰</div>
-            <div class="payment-title">COD</div>
-          </div>
-
-          <div class="payment-option" onclick="selectPayment('Net Banking', this)">
-            <div class="payment-icon">🏦</div>
-            <div class="payment-title">Net Banking</div>
-          </div>
+          <aside class="checkout-summary">
+            <div class="checkout-summary-card">
+              <div class="summary-heading">Order summary</div>
+              <div id="checkoutSummary" class="summary-body">
+                <div class="summary-row"><span>Loading details...</span></div>
+              </div>
+            </div>
+            <div class="checkout-note">
+              <h3>Why use UPI?</h3>
+              <p>UPI payments are fast, secure, and covered by RBI guidelines. Enter your UPI ID to confirm payment instantly.</p>
+            </div>
+            <div class="checkout-note">
+              <h3>Card checkout</h3>
+              <p>We only store the last 4 digits and use client-side validation for card format and expiry.</p>
+            </div>
+            <div class="checkout-note">
+              <h3>Need help?</h3>
+              <p>If your payment does not go through, refresh the page and try again or contact support from your dashboard.</p>
+            </div>
+          </aside>
         </div>
-
-        <div id="upiSection" style="display:none;">
-          <input type="text" id="upiId" placeholder="Enter UPI ID (example@paytm)" />
-        </div>
-
-        <div id="cardSection" style="display:none;">
-          <input type="text" id="cardNumber" placeholder="Card Number (16 digits)" maxlength="16" />
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" />
-            <input type="text" id="cardCVV" placeholder="CVV" maxlength="3" />
-          </div>
-        </div>
-
-        <select id="deliveryMode">
-          <option value="Standard">📦 Standard Delivery (5-7 days)</option>
-          <option value="Express">🚚 Express Delivery (2-3 days)</option>
-          <option value="Overnight">⚡ Overnight Delivery</option>
-        </select>
-
-        <button type="submit" id="checkoutBtn">Complete Payment</button>
       </form>
 
-      <div class="center" style="margin-top: 1.5rem;">
-        <p class="text-small">🔒 Your payment is 100% secure and encrypted</p>
-        <a href="/customer-dashboard">⬅ Back to Dashboard</a>
+      <div class="checkout-footer center" style="margin-top: 1rem;">
+        <p class="text-small">🔒 Your payment is secure. We do not save full card numbers.</p>
+        <a href="/customer-dashboard">⬅ Back to dashboard</a>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <script src="/js/payment.js"></script>
-</body>
-</html>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>

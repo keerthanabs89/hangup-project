@@ -11,26 +11,32 @@
     <p>Your Fashion Request Dashboard</p>
   </header>
 
-  <div class="container">
-    <div class="topbar">
-      <div>
-        <h2 class="page-heading">Welcome Back 👗</h2>
-        <p class="subtext">Track your requests, payments and deliveries</p>
+  <main class="page-shell">
+    <section class="card">
+      <div class="topbar">
+        <div>
+          <h2 class="page-heading">Welcome Back 👗</h2>
+          <p class="subtext">Track your requests, payments and deliveries</p>
+        </div>
+        <div class="nav-links">
+          <a href="/request-form">+ Post New Request</a>
+          <button onclick="logout()">Logout</button>
+        </div>
       </div>
-      <div class="nav-links">
-        <a href="/request-form">+ Post New Request</a>
-        <button onclick="logout()">Logout</button>
-      </div>
-    </div>
 
-    <div class="stats-grid">
+      <div class="stats-grid">
       <div class="stat-card"><h3>Total Requests</h3><p id="custTotalRequests">0</p></div>
       <div class="stat-card"><h3>Curated</h3><p id="custCuratedCount">0</p></div>
       <div class="stat-card"><h3>Paid</h3><p id="custPaidCount">0</p></div>
       <div class="stat-card"><h3>Shipped</h3><p id="custShippedCount">0</p></div>
     </div>
+    </section>
 
-    <div class="accordion">
+    <section class="card">
+      <div class="section-title">Request overview</div>
+      <p class="section-intro">Expand each section to view requests by status.</p>
+
+      <div class="accordion">
       <div class="accordion-header" onclick="toggleSection('pendingRequests')">🕒 Pending Requests</div>
       <div id="pendingRequests" class="accordion-content grid"></div>
 
@@ -49,7 +55,8 @@
       <div class="accordion-header" onclick="toggleSection('rejectedRequests')">❌ Rejected Requests</div>
       <div id="rejectedRequests" class="accordion-content grid"></div>
     </div>
-  </div>
+    </section>
+  </main>
 
   <script src="/js/main.js"></script>
 </body>
