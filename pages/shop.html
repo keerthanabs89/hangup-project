@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HANG UP - Shop</title>
+    <link rel="stylesheet" href="../styles/modern.css">
+    <style>
+        .shop-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .sidebar {
+            background-color: var(--white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .filter-group {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .filter-title {
+            font-weight: 600;
+            font-size: var(--font-size-base);
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            cursor: pointer;
+        }
+
+        .filter-item input[type="checkbox"],
+        .filter-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+        }
+
+        .price-range {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .price-input {
+            width: 80px;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+        }
+
+        .shop-main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            background-color: var(--white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .shop-header h2 {
+            margin: 0;
+        }
+
+        .sort-select {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            min-width: 200px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #FFE4D6, #FFF0E8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background-color: var(--danger);
+            color: var(--white);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: 700;
+        }
+
+        .product-info {
+            padding: var(--spacing-lg);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        .stars {
+            color: #FFC107;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .current-price {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: var(--font-size-base);
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .discount-percent {
+            background-color: var(--danger);
+            color: var(--white);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: 700;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: auto;
+        }
+
+        .add-to-cart-btn {
+            flex: 1;
+            height: 44px;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+        }
+
+        .wishlist-btn {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            font-size: 20px;
+            background-color: var(--background);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .wishlist-btn:hover {
+            background-color: #FFE4D6;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xxl);
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        @media (max-width: 1024px) {
+            .shop-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-lg);
+            }
+
+            .filter-group {
+                margin-bottom: 0;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .shop-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-lg);
+            }
+
+            .sort-select {
+                width: 100%;
+            }
+
+            .sidebar {
+                display: flex;
+                flex-direction: column;
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .shop-header h2 {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-md);
+            }
+
+            .product-image {
+                height: 180px;
+                font-size: 60px;
+            }
+
+            .product-info {
+                padding: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-logo">🛍️ HANG UP</div>
+        <div class="navbar-menu">
+            <a href="#home">Home</a>
+            <a href="#shop" style="color: var(--primary); font-weight: 700;">Shop</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#about">About</a>
+        </div>
+        <div style="flex: 1;"></div>
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">Login</button>
+        <button class="btn btn-primary" onclick="window.location.href='signup.html'">Sign Up</button>
+    </nav>
+
+    <div class="container">
+        <div class="shop-container">
+            <!-- Sidebar Filters -->
+            <aside class="sidebar">
+                <h3>🔍 Filters</h3>
+
+                <!-- Categories -->
+                <div class="filter-group">
+                    <div class="filter-title">Category</div>
+                    <div class="filter-item">
+                        <input type="radio" id="cat-all" name="category" value="all" checked>
+                        <label for="cat-all">All Products</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="cat-dresses" name="category" value="dresses">
+                        <label for="cat-dresses">Dresses</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="cat-tops" name="category" value="tops">
+                        <label for="cat-tops">Tops & T-Shirts</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="cat-accessories" name="category" value="accessories">
+                        <label for="cat-accessories">Accessories</label>
+                    </div>
+                </div>
+
+                <!-- Size -->
+                <div class="filter-group">
+                    <div class="filter-title">Size</div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="size-xs">
+                        <label for="size-xs">XS</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="size-s">
+                        <label for="size-s">S</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="size-m" checked>
+                        <label for="size-m">M</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="size-l">
+                        <label for="size-l">L</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="size-xl">
+                        <label for="size-xl">XL</label>
+                    </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="filter-group">
+                    <div class="filter-title">Price Range</div>
+                    <div class="price-range">
+                        <input type="number" class="price-input" placeholder="Min" value="0">
+                        <span>-</span>
+                        <input type="number" class="price-input" placeholder="Max" value="5000">
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="filter-group">
+                    <div class="filter-title">Color</div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="color-black" checked>
+                        <label for="color-black">Black</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="color-white">
+                        <label for="color-white">White</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="color-red">
+                        <label for="color-red">Red</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="color-blue">
+                        <label for="color-blue">Blue</label>
+                    </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="filter-group">
+                    <div class="filter-title">Rating</div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="rating-4" checked>
+                        <label for="rating-4">⭐⭐⭐⭐ & Up</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="rating-3">
+                        <label for="rating-3">⭐⭐⭐ & Up</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Shop Content -->
+            <div class="shop-main">
+                <!-- Shop Header -->
+                <div class="shop-header">
+                    <h2>👗 Fashion Collection</h2>
+                    <select class="sort-select" onchange="handleSort(this.value)">
+                        <option value="latest">Latest</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Top Rated</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge">-30%</div>
+                            👗
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Elegant Dress</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span>(248)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹1,499</span>
+                                <span class="original-price">₹2,140</span>
+                                <span class="discount-percent">-30%</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Elegant Dress', 1499)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">❤️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge">-25%</div>
+                            👔
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Casual T-Shirt</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span>(156)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹599</span>
+                                <span class="original-price">₹799</span>
+                                <span class="discount-percent">-25%</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Casual T-Shirt', 599)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            🧣
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Silk Scarf</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span>(89)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹449</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Silk Scarf', 449)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge">-40%</div>
+                            👖
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Denim Jeans</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span>(312)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹999</span>
+                                <span class="original-price">₹1,666</span>
+                                <span class="discount-percent">-40%</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Denim Jeans', 999)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge">-15%</div>
+                            👗
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Summer Dress</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span>(201)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹799</span>
+                                <span class="original-price">₹940</span>
+                                <span class="discount-percent">-15%</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Summer Dress', 799)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            👜
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Designer Handbag</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span>(134)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹1,999</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Designer Handbag', 1999)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 7 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-badge">-20%</div>
+                            👠
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Heel Shoes</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span>(178)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹1,199</span>
+                                <span class="original-price">₹1,499</span>
+                                <span class="discount-percent">-20%</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Heel Shoes', 1199)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 8 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            ⌚
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">Premium Watch</div>
+                            <div class="product-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span>(95)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹2,499</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('Premium Watch', 2499)">
+                                    🛒 Add to Cart
+                                </button>
+                                <button class="wishlist-btn" onclick="toggleWishlist(this)">🤍</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            alert(`✅ Added "${name}" to cart!\n\nTotal items: ${cart.length}`);
+        }
+
+        function toggleWishlist(btn) {
+            if (btn.textContent === '❤️') {
+                btn.textContent = '🤍';
+            } else {
+                btn.textContent = '❤️';
+                alert('Added to wishlist! ❤️');
+            }
+        }
+
+        function handleSort(value) {
+            alert(`Sorting by: ${value}`);
+        }
+
+        // Update total item count in nav if needed
+        function updateCartCount() {
+            // You can add a cart count display here
+        }
+    </script>
+</body>
+</html>
