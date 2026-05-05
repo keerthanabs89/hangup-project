@@ -294,23 +294,8 @@ async function loadStoreRequests() {
             }
             ${req.status === "Accepted" && req.acceptedBy === currentUser?.name
               ? `
-                <div style="margin-top: 1rem; padding: 1rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
-                  <h4 style="margin: 0 0 0.75rem;">Curate this request</h4>
-                  <div style="display: grid; gap: 1rem;">
-                    <div>
-                      <label for="msg-${req._id}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Message</label>
-                      <textarea id="msg-${req._id}" placeholder="Share the curated details..." style="width:100%; min-height:76px; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;"></textarea>
-                    </div>
-                    <div>
-                      <label for="price-${req._id}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Final Price</label>
-                      <input type="number" id="price-${req._id}" placeholder="₹Enter final price" min="1" step="1" style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
-                    </div>
-                    <div>
-                      <label for="img-${req._id}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Image</label>
-                      <input type="file" id="img-${req._id}" style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
-                    </div>
-                    <button onclick="event.stopPropagation(); curate('${req._id}')" style="padding:0.75rem 1rem; background:#0f172a; color:white; border:none; border-radius:8px; cursor:pointer;">Upload Curated Item</button>
-                  </div>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem;">
+                  <button onclick="event.stopPropagation(); openCurationModal('${req._id}', '${req.customerName}', '${req.style}')">✨ Curate Item</button>
                 </div>
               `
               : ""
@@ -416,6 +401,64 @@ async function curate(id) {
     loadStoreRequests();
   } catch (err) {
     console.error("Curate Error:", err);
+  }
+}
+
+// Modal functions for curation
+let currentCurationId = null;
+
+function openCurationModal(id, customerName, style) {
+  currentCurationId = id;
+  document.getElementById("curationModal").style.display = "flex";
+  document.getElementById("curationMessage").value = "";
+  document.getElementById("curationPrice").value = "";
+  document.getElementById("curationImage").value = "";
+  // Optionally update modal title with customer info
+  document.querySelector("#curationModal .modal-header h3").textContent = `Curate for ${customerName} - ${style}`;
+}
+
+function closeCurationModal() {
+  document.getElementById("curationModal").style.display = "none";
+  currentCurationId = null;
+}
+
+async function submitCuration() {
+  if (!currentCurationId) return;
+
+  const message = document.getElementById("curationMessage").value;
+  const price = document.getElementById("curationPrice").value;
+  const image = document.getElementById("curationImage").files[0];
+
+  if (!price) {
+    alert("Please enter a final price");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("storeMessage", message);
+  formData.append("curatedPrice", price);
+  if (image) formData.append("curatedImage", image);
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch(`/api/requests/curate/${currentCurationId}`, {
+      method: "PUT",
+      headers: { Authorization: token },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(data.message);
+      closeCurationModal();
+      loadStoreRequests();
+    } else {
+      alert(data.message || "Error submitting curation");
+    }
+  } catch (err) {
+    console.error("Submit Curation Error:", err);
+    alert("Network error. Please try again.");
   }
 }
 

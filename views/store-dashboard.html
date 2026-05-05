@@ -55,6 +55,36 @@
     </section>
   </main>
 
+  <!-- Curation Modal -->
+  <div id="curationModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Curate Request</h3>
+        <button onclick="closeCurationModal()" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="curationForm">
+          <div class="form-group">
+            <label for="curationMessage">Message to Customer</label>
+            <textarea id="curationMessage" placeholder="Describe the curated item details..." rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="curationPrice">Final Price (₹)</label>
+            <input type="number" id="curationPrice" placeholder="Enter final price" min="1" step="1" />
+          </div>
+          <div class="form-group">
+            <label for="curationImage">Upload Image</label>
+            <input type="file" id="curationImage" accept="image/*" />
+          </div>
+          <div class="modal-actions">
+            <button onclick="submitCuration()" class="primary-btn">Submit Curation</button>
+            <button onclick="closeCurationModal()" class="secondary-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="/js/main.js"></script>
 </body>
 </html>
