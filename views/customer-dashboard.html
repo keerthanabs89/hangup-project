@@ -4,60 +4,325 @@
   <meta charset="UTF-8" />
   <title>Customer Dashboard - HANG UP</title>
   <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header>
-    <h1>HANG UP</h1>
-    <p>Your Fashion Request Dashboard</p>
-  </header>
-
-  <main class="page-shell">
-    <section class="card">
-      <div class="topbar">
-        <div>
-          <h2 class="page-heading">Welcome Back 👗</h2>
-          <p class="subtext">Track your requests, payments and deliveries</p>
-        </div>
-        <div class="nav-links">
-          <a href="/request-form">+ Post New Request</a>
-          <button onclick="logout()">Logout</button>
-        </div>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="brand">HANG UP</h2>
+        <p class="brand-tagline">Fashion Made Personal</p>
       </div>
 
-      <div class="stats-grid">
-      <div class="stat-card"><h3>Total Requests</h3><p id="custTotalRequests">0</p></div>
-      <div class="stat-card"><h3>Curated</h3><p id="custCuratedCount">0</p></div>
-      <div class="stat-card"><h3>Paid</h3><p id="custPaidCount">0</p></div>
-      <div class="stat-card"><h3>Shipped</h3><p id="custShippedCount">0</p></div>
-    </div>
-    </section>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-section="dashboard">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#requests" class="nav-item" data-section="requests">
+          <i class="fas fa-plus-circle"></i>
+          <span>New Request</span>
+        </a>
+        <a href="#orders" class="nav-item" data-section="orders">
+          <i class="fas fa-shopping-bag"></i>
+          <span>My Orders</span>
+        </a>
+        <a href="#wishlist" class="nav-item" data-section="wishlist">
+          <i class="fas fa-heart"></i>
+          <span>Wishlist</span>
+        </a>
+        <a href="#profile" class="nav-item" data-section="profile">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="#settings" class="nav-item" data-section="settings">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
 
-    <section class="card">
-      <div class="section-title">Request overview</div>
-      <p class="section-intro">Open a category and tap any request tile to see full order details.</p>
+      <div class="sidebar-footer">
+        <button onclick="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
 
-      <div class="accordion">
-      <div class="accordion-header" onclick="toggleSection('pendingRequests')">🕒 Pending Requests</div>
-      <div id="pendingRequests" class="accordion-content grid"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="mobile-menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
 
-      <div class="accordion-header" onclick="toggleSection('acceptedRequests')">✅ Accepted Requests</div>
-      <div id="acceptedRequests" class="accordion-content grid"></div>
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search requests..." id="searchInput">
+        </div>
 
-      <div class="accordion-header" onclick="toggleSection('curatedRequests')">✨ Curated / Ready to Pay</div>
-      <div id="curatedRequests" class="accordion-content grid"></div>
+        <div class="user-profile">
+          <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </div>
+          <div class="user-info">
+            <img src="/images/default-avatar.png" alt="Profile" class="profile-pic">
+            <span class="username" id="userName">Keerthana</span>
+          </div>
+          <div class="theme-toggle">
+            <i class="fas fa-moon" id="themeIcon"></i>
+          </div>
+        </div>
+      </header>
 
-      <div class="accordion-header" onclick="toggleSection('paidRequests')">💳 Paid Orders</div>
-      <div id="paidRequests" class="accordion-content grid"></div>
+      <!-- Dashboard Content -->
+      <div class="content-area">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="content-section active">
+          <div class="welcome-hero">
+            <h1>Find Your Style ✨</h1>
+            <p>Custom curated fashion requests made simple</p>
+            <button class="cta-btn" onclick="showNewRequest()">
+              <i class="fas fa-plus"></i>
+              Create New Request
+            </button>
+          </div>
 
-      <div class="accordion-header" onclick="toggleSection('shippedRequests')">📦 Shipped Orders</div>
-      <div id="shippedRequests" class="accordion-content grid"></div>
+          <div class="stats-overview">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-shopping-bag"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="custTotalRequests">0</h3>
+                <p>Total Requests</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-magic"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="custCuratedCount">0</h3>
+                <p>Curated</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-credit-card"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="custPaidCount">0</h3>
+                <p>Paid</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="custShippedCount">0</h3>
+                <p>Shipped</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="custDeliveredCount">0</h3>
+                <p>Delivered</p>
+              </div>
+            </div>
+          </div>
 
-      <div class="accordion-header" onclick="toggleSection('rejectedRequests')">❌ Rejected Requests</div>
-      <div id="rejectedRequests" class="accordion-content grid"></div>
-    </div>
-    </section>
-  </main>
+          <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div class="activity-list" id="recentActivity">
+              <!-- Activity items will be populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders-section" class="content-section">
+          <div class="section-header">
+            <h2>My Orders</h2>
+            <div class="filters">
+              <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="curated">Curated</option>
+                <option value="paid">Paid</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="orders-grid" id="ordersGrid">
+            <!-- Orders will be populated by JS -->
+          </div>
+        </section>
+
+        <!-- New Request Section -->
+        <section id="requests-section" class="content-section">
+          <div class="new-request-form">
+            <h2>Create New Request</h2>
+            <form id="requestForm" enctype="multipart/form-data">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Style Description</label>
+                  <input type="text" id="style" placeholder="e.g., Korean oversized hoodie" required>
+                </div>
+                <div class="form-group">
+                  <label>Category</label>
+                  <select id="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Tops">Tops</option>
+                    <option value="Bottoms">Bottoms</option>
+                    <option value="Dresses">Dresses</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Accessories">Accessories</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Size</label>
+                  <select id="size" required>
+                    <option value="">Select Size</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Budget (₹)</label>
+                  <input type="number" id="budget" placeholder="1000" min="100" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Reference Image (Optional)</label>
+                <input type="file" id="image" accept="image/*">
+              </div>
+              <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i>
+                Submit Request
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Wishlist Section -->
+        <section id="wishlist-section" class="content-section">
+          <h2>My Wishlist</h2>
+          <div class="wishlist-grid" id="wishlistGrid">
+            <div class="empty-state">
+              <i class="fas fa-heart"></i>
+              <h3>Your wishlist is empty</h3>
+              <p>Save items you love for later</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="content-section">
+          <h2>My Profile</h2>
+          <div class="profile-card">
+            <div class="profile-header">
+              <img src="/images/default-avatar.png" alt="Profile" class="profile-avatar">
+              <div class="profile-info">
+                <h3 id="profileName">Keerthana</h3>
+                <p id="profileEmail">keerthana@example.com</p>
+              </div>
+            </div>
+            <div class="profile-stats">
+              <div class="stat">
+                <span class="stat-number" id="profileRequests">0</span>
+                <span class="stat-label">Requests</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="profileSpent">₹0</span>
+                <span class="stat-label">Spent</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="profileDelivered">0</span>
+                <span class="stat-label">Delivered</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings-section" class="content-section">
+          <h2>Settings</h2>
+          <div class="settings-card">
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Dark Mode</h4>
+                <p>Toggle between light and dark themes</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Notifications</h4>
+                <p>Receive updates about your orders</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notificationsToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Email Updates</h4>
+                <p>Get order updates via email</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="emailToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-nav">
+    <a href="#dashboard" class="mobile-nav-item active" data-section="dashboard">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#requests" class="mobile-nav-item" data-section="requests">
+      <i class="fas fa-plus-circle"></i>
+      <span>Request</span>
+    </a>
+    <a href="#orders" class="mobile-nav-item" data-section="orders">
+      <i class="fas fa-shopping-bag"></i>
+      <span>Orders</span>
+    </a>
+    <a href="#profile" class="mobile-nav-item" data-section="profile">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </nav>
 
   <script src="/js/main.js"></script>
+  <script src="/js/dashboard.js"></script>
 </body>
 </html>

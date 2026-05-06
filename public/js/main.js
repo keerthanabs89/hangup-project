@@ -142,6 +142,7 @@ async function loadMyRequests() {
   const curatedBox = document.getElementById("curatedRequests");
   const paidBox = document.getElementById("paidRequests");
   const shippedBox = document.getElementById("shippedRequests");
+  const deliveredBox = document.getElementById("deliveredRequests");
   const rejectedBox = document.getElementById("rejectedRequests");
 
   if (!pendingBox) return;
@@ -158,17 +159,20 @@ async function loadMyRequests() {
     curatedBox.innerHTML = "";
     paidBox.innerHTML = "";
     shippedBox.innerHTML = "";
+    deliveredBox.innerHTML = "";
     rejectedBox.innerHTML = "";
 
     const totalEl = document.getElementById("custTotalRequests");
     const curatedEl = document.getElementById("custCuratedCount");
     const paidEl = document.getElementById("custPaidCount");
     const shippedEl = document.getElementById("custShippedCount");
+    const deliveredEl = document.getElementById("custDeliveredCount");
 
     if (totalEl) totalEl.innerText = data.length || 0;
     if (curatedEl) curatedEl.innerText = data.filter(r => r.status === "Curated").length;
     if (paidEl) paidEl.innerText = data.filter(r => r.status === "Paid").length;
     if (shippedEl) shippedEl.innerText = data.filter(r => r.status === "Shipped").length;
+    if (deliveredEl) deliveredEl.innerText = data.filter(r => r.status === "Delivered").length;
 
     data.forEach(req => {
       const card = `
@@ -197,6 +201,10 @@ async function loadMyRequests() {
               ? `<button onclick="event.stopPropagation(); goToCheckout('${req._id}')">💳 Pay Now</button>`
               : ""
             }
+            ${req.status === "Delivered"
+              ? `<button onclick="event.stopPropagation(); deleteOrder('${req._id}')">🗑️ Delete Order</button>`
+              : ""
+            }
           </div>
         </div>
       `;
@@ -206,6 +214,7 @@ async function loadMyRequests() {
       else if (req.status === "Curated") curatedBox.innerHTML += card;
       else if (req.status === "Paid") paidBox.innerHTML += card;
       else if (req.status === "Shipped") shippedBox.innerHTML += card;
+      else if (req.status === "Delivered") deliveredBox.innerHTML += card;
       else if (req.status === "Rejected") rejectedBox.innerHTML += card;
     });
 
@@ -214,6 +223,7 @@ async function loadMyRequests() {
     addEmptyMessage(curatedBox, "No curated requests");
     addEmptyMessage(paidBox, "No paid orders");
     addEmptyMessage(shippedBox, "No shipped orders");
+    addEmptyMessage(deliveredBox, "No delivered orders");
     addEmptyMessage(rejectedBox, "No rejected requests");
   } catch (err) {
     console.error("Load My Requests Error:", err);
@@ -232,6 +242,7 @@ async function loadStoreRequests() {
   const curatedBox = document.getElementById("curatedStoreRequests");
   const paidBox = document.getElementById("paidStoreRequests");
   const shippedBox = document.getElementById("shippedStoreRequests");
+  const deliveredBox = document.getElementById("deliveredStoreRequests");
   const rejectedBox = document.getElementById("rejectedStoreRequests");
 
   if (!newBox) return;
@@ -248,6 +259,7 @@ async function loadStoreRequests() {
     curatedBox.innerHTML = "";
     paidBox.innerHTML = "";
     shippedBox.innerHTML = "";
+    deliveredBox.innerHTML = "";
     rejectedBox.innerHTML = "";
 
     const myAccepted = data.filter(r => r.acceptedBy === currentUser?.name);
@@ -308,6 +320,10 @@ async function loadStoreRequests() {
               ? `<button onclick="event.stopPropagation(); markShipped('${req._id}')">📦 Mark as Shipped</button>`
               : ""
             }
+            ${req.status === "Shipped" && req.acceptedBy === currentUser?.name
+              ? `<button onclick="event.stopPropagation(); markDelivered('${req._id}')">✅ Mark as Delivered</button>`
+              : ""
+            }
           </div>
         </div>
       `;
@@ -317,6 +333,7 @@ async function loadStoreRequests() {
       else if (req.status === "Curated" && req.acceptedBy === currentUser?.name) curatedBox.innerHTML += card;
       else if (req.status === "Paid" && req.acceptedBy === currentUser?.name) paidBox.innerHTML += card;
       else if (req.status === "Shipped" && req.acceptedBy === currentUser?.name) shippedBox.innerHTML += card;
+      else if (req.status === "Delivered" && req.acceptedBy === currentUser?.name) deliveredBox.innerHTML += card;
       else if (req.status === "Rejected") rejectedBox.innerHTML += card;
     });
 
@@ -325,6 +342,7 @@ async function loadStoreRequests() {
     addEmptyMessage(curatedBox, "No curated requests");
     addEmptyMessage(paidBox, "No paid orders");
     addEmptyMessage(shippedBox, "No shipped orders");
+    addEmptyMessage(deliveredBox, "No delivered orders");
     addEmptyMessage(rejectedBox, "No rejected requests");
   } catch (err) {
     console.error("Load Store Requests Error:", err);
@@ -479,12 +497,56 @@ async function markShipped(id) {
   }
 }
 
+async function markDelivered(id) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch(`/api/requests/deliver/${id}`, {
+      method: "PUT",
+      headers: { Authorization: token }
+    });
+
+    const data = await res.json();
+    alert(data.message);
+    loadStoreRequests();
+  } catch (err) {
+    console.error("Mark Delivered Error:", err);
+  }
+}
+
 // ==============================
 // CHECKOUT
 // ==============================
 function goToCheckout(id) {
   localStorage.setItem("checkoutId", id);
   window.location.href = "/checkout";
+}
+
+async function deleteOrder(id) {
+  if (!confirm("Are you sure you want to delete this delivered order? This action cannot be undone.")) {
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch(`/api/requests/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: token }
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Order deleted successfully!");
+      loadMyRequests(); // Refresh the dashboard
+    } else {
+      alert(data.message || "Failed to delete order");
+    }
+  } catch (err) {
+    console.error("Delete Order Error:", err);
+    alert("Error deleting order");
+  }
 }
 
 function selectPayment(method, el) {

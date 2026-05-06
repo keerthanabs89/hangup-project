@@ -370,4 +370,52 @@ router.put("/ship/:id", verifyToken, async (req, res) => {
   }
 });
 
+// DELIVER
+router.put("/deliver/:id", verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== "store") {
+      return res.status(403).json({ message: "Only stores can mark delivered" });
+    }
+
+    const request = await Request.findById(req.params.id);
+    if (!request) return res.status(404).json({ message: "Request not found" });
+
+    if (request.acceptedBy !== req.user.name) {
+      return res.status(403).json({ message: "Only accepted store can deliver this request" });
+    }
+
+    request.status = "Delivered";
+    await request.save();
+
+    res.json({ message: "Marked as delivered successfully" });
+  } catch (err) {
+    console.error("Deliver Error:", err);
+    res.status(500).json({ message: "Error updating delivery" });
+  }
+});
+
+// DELETE DELIVERED ORDER
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const request = await Request.findById(req.params.id);
+    if (!request) return res.status(404).json({ message: "Request not found" });
+
+    // Only allow deletion if status is "Delivered"
+    if (request.status !== "Delivered") {
+      return res.status(400).json({ message: "Only delivered orders can be deleted" });
+    }
+
+    // Check if user is the customer who made the request or admin
+    if (request.customerName !== req.user.name && req.user.role !== "admin") {
+      return res.status(403).json({ message: "You can only delete your own delivered orders" });
+    }
+
+    await Request.findByIdAndDelete(req.params.id);
+    res.json({ message: "Order deleted successfully" });
+  } catch (err) {
+    console.error("Delete Error:", err);
+    res.status(500).json({ message: "Error deleting order" });
+  }
+});
+
 module.exports = router;
