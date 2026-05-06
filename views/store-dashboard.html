@@ -2,92 +2,247 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Store Dashboard - HANG UP</title>
   <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header>
-    <h1>Store Dashboard</h1>
-    <p>Manage all customer requests and your earnings</p>
-  </header>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="brand">HANG UP</h2>
+        <p class="brand-tagline">Store control panel</p>
+      </div>
 
-  <main class="page-shell">
-    <section class="card">
-      <div class="topbar">
-        <div>
-          <h2 class="page-heading">Store Control Panel</h2>
-          <p class="subtext">Accept, curate, ship and track earnings</p>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-section="dashboard">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#requests" class="nav-item" data-section="requests">
+          <i class="fas fa-tasks"></i>
+          <span>Requests</span>
+        </a>
+        <a href="#profile" class="nav-item" data-section="profile">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="#settings" class="nav-item" data-section="settings">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button onclick="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="mobile-menu-toggle">
+          <i class="fas fa-bars"></i>
         </div>
-        <button onclick="logout()">Logout</button>
-      </div>
 
-      <div class="stats-grid">
-      <div class="stat-card"><h3>Total Orders</h3><p id="storeTotalOrders">0</p></div>
-      <div class="stat-card"><h3>Accepted</h3><p id="storeAcceptedCount">0</p></div>
-      <div class="stat-card"><h3>Paid</h3><p id="storePaidCount">0</p></div>
-      <div class="stat-card"><h3>My Earnings</h3><p id="storeTotalEarnings">₹0</p></div>
-    </div>
-    </section>
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search requests..." id="searchInput">
+        </div>
 
-    <section class="card">
-      <div class="section-title">Request workflow</div>
-      <p class="section-intro">Open a status group and tap a square order tile for details.</p>
-
-      <div class="accordion">
-      <div class="accordion-header" onclick="toggleSection('newStoreRequests')">🆕 New Requests</div>
-      <div id="newStoreRequests" class="accordion-content grid"></div>
-
-      <div class="accordion-header" onclick="toggleSection('acceptedStoreRequests')">✅ Accepted By Me</div>
-      <div id="acceptedStoreRequests" class="accordion-content grid"></div>
-
-      <div class="accordion-header" onclick="toggleSection('curatedStoreRequests')">✨ Curated</div>
-      <div id="curatedStoreRequests" class="accordion-content grid"></div>
-
-      <div class="accordion-header" onclick="toggleSection('paidStoreRequests')">💳 Paid Orders</div>
-      <div id="paidStoreRequests" class="accordion-content grid"></div>
-
-      <div class="accordion-header" onclick="toggleSection('shippedStoreRequests')">📦 Shipped Orders</div>
-      <div id="shippedStoreRequests" class="accordion-content grid"></div>
-
-      <div class="accordion-header" onclick="toggleSection('deliveredStoreRequests')">✅ Delivered Orders</div>
-      <div id="deliveredStoreRequests" class="accordion-content grid"></div>
-
-      <div class="accordion-header" onclick="toggleSection('rejectedStoreRequests')">❌ Rejected</div>
-      <div id="rejectedStoreRequests" class="accordion-content grid"></div>
-    </div>
-    </section>
-  </main>
-
-  <!-- Curation Modal -->
-  <div id="curationModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Curate Request</h3>
-        <button onclick="closeCurationModal()" class="close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div id="curationForm">
-          <div class="form-group">
-            <label for="curationMessage">Message to Customer</label>
-            <textarea id="curationMessage" placeholder="Describe the curated item details..." rows="4"></textarea>
+        <div class="user-profile">
+          <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">2</span>
           </div>
-          <div class="form-group">
-            <label for="curationPrice">Final Price (₹)</label>
-            <input type="number" id="curationPrice" placeholder="Enter final price" min="1" step="1" />
+          <div class="user-info">
+            <img src="/images/default-avatar.png" alt="Profile" class="profile-pic">
+            <span class="username" id="userName">Store Owner</span>
           </div>
-          <div class="form-group">
-            <label for="curationImage">Upload Image</label>
-            <input type="file" id="curationImage" accept="image/*" />
-          </div>
-          <div class="modal-actions">
-            <button onclick="submitCuration()" class="primary-btn">Submit Curation</button>
-            <button onclick="closeCurationModal()" class="secondary-btn">Cancel</button>
+          <div class="theme-toggle">
+            <i class="fas fa-moon" id="themeIcon"></i>
           </div>
         </div>
+      </header>
+
+      <div class="content-area">
+        <section id="dashboard-section" class="content-section active">
+          <div class="welcome-hero">
+            <h1>Store Dashboard</h1>
+            <p>Accept, curate, ship and manage your fashion orders in one place.</p>
+            <button class="cta-btn" onclick="showSection('requests')">
+              <i class="fas fa-tasks"></i>
+              View Requests
+            </button>
+          </div>
+
+          <div class="stats-overview">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-box"></i></div>
+              <div class="stat-content">
+                <h3 id="storeTotalOrders">0</h3>
+                <p>Total Orders</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-check"></i></div>
+              <div class="stat-content">
+                <h3 id="storeAcceptedCount">0</h3>
+                <p>Accepted</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
+              <div class="stat-content">
+                <h3 id="storePaidCount">0</h3>
+                <p>Paid</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+              <div class="stat-content">
+                <h3 id="storeDeliveredCount">0</h3>
+                <p>Delivered</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+              <div class="stat-content">
+                <h3 id="storeTotalEarnings">₹0</h3>
+                <p>Earnings</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="recent-activity">
+            <h2>Recent Workflow</h2>
+            <div class="activity-list" id="recentActivity"></div>
+          </div>
+        </section>
+
+        <section id="requests-section" class="content-section">
+          <div class="section-header">
+            <h2>Request Workflow</h2>
+            <div class="filters">
+              <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="curated">Curated</option>
+                <option value="paid">Paid</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+              </select>
+            </div>
+          </div>
+          <div class="request-grid">
+            <div class="card">
+              <h3>New Requests</h3>
+              <div id="newStoreRequests" class="accordion-content grid"></div>
+            </div>
+            <div class="card">
+              <h3>Accepted By Me</h3>
+              <div id="acceptedStoreRequests" class="accordion-content grid"></div>
+            </div>
+            <div class="card">
+              <h3>Curated</h3>
+              <div id="curatedStoreRequests" class="accordion-content grid"></div>
+            </div>
+            <div class="card">
+              <h3>Paid Orders</h3>
+              <div id="paidStoreRequests" class="accordion-content grid"></div>
+            </div>
+            <div class="card">
+              <h3>Shipped Orders</h3>
+              <div id="shippedStoreRequests" class="accordion-content grid"></div>
+            </div>
+            <div class="card">
+              <h3>Delivered Orders</h3>
+              <div id="deliveredStoreRequests" class="accordion-content grid"></div>
+            </div>
+            <div class="card">
+              <h3>Rejected</h3>
+              <div id="rejectedStoreRequests" class="accordion-content grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile-section" class="content-section">
+          <h2>Store Profile</h2>
+          <div class="profile-card">
+            <div class="profile-header">
+              <img src="/images/default-avatar.png" alt="Store" class="profile-avatar">
+              <div class="profile-info">
+                <h3 id="profileName">Store Owner</h3>
+                <p id="profileEmail">store@example.com</p>
+              </div>
+            </div>
+            <div class="profile-stats">
+              <div class="stat">
+                <span class="stat-number" id="profileRequests">0</span>
+                <span class="stat-label">Requests</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="profileSpent">₹0</span>
+                <span class="stat-label">Earnings</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="profileDelivered">0</span>
+                <span class="stat-label">Delivered</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings-section" class="content-section">
+          <h2>Settings</h2>
+          <div class="settings-card">
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Dark Mode</h4>
+                <p>Toggle between light and dark themes</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Notifications</h4>
+                <p>Receive shipment and order alerts</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notificationsToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
+    </main>
   </div>
 
+  <nav class="mobile-nav">
+    <a href="#dashboard" class="mobile-nav-item active" data-section="dashboard">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#requests" class="mobile-nav-item" data-section="requests">
+      <i class="fas fa-tasks"></i>
+      <span>Requests</span>
+    </a>
+    <a href="#profile" class="mobile-nav-item" data-section="profile">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </nav>
+
   <script src="/js/main.js"></script>
+  <script src="/js/dashboard.js"></script>
 </body>
 </html>

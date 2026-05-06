@@ -105,6 +105,11 @@ function loadUserData() {
 }
 
 async function loadDashboardContent() {
+  if (document.getElementById('newStoreRequests')) {
+    await loadStoreDashboardContent();
+    return;
+  }
+
   const token = localStorage.getItem('token');
 
   try {
@@ -122,6 +127,44 @@ async function loadDashboardContent() {
 
   } catch (error) {
     console.error('Error loading dashboard:', error);
+  }
+}
+
+async function loadStoreDashboardContent() {
+  const token = localStorage.getItem('token');
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+  try {
+    const response = await fetch('/api/requests/all', {
+      headers: { Authorization: token }
+    });
+
+    const requests = await response.json();
+    const myStoreRequests = requests.filter(r => r.acceptedBy === currentUser.name || r.status === 'Pending');
+
+    const total = myStoreRequests.length;
+    const accepted = requests.filter(r => r.acceptedBy === currentUser.name && r.status === 'Accepted').length;
+    const paid = requests.filter(r => r.acceptedBy === currentUser.name && r.status === 'Paid').length;
+    const delivered = requests.filter(r => r.acceptedBy === currentUser.name && r.status === 'Delivered').length;
+    const earnings = requests
+      .filter(r => r.acceptedBy === currentUser.name && (r.status === 'Paid' || r.status === 'Shipped' || r.status === 'Delivered'))
+      .reduce((sum, r) => sum + (r.storeEarning || 0), 0);
+
+    const totalEl = document.getElementById('storeTotalOrders');
+    const acceptedEl = document.getElementById('storeAcceptedCount');
+    const paidEl = document.getElementById('storePaidCount');
+    const deliveredEl = document.getElementById('storeDeliveredCount');
+    const earningsEl = document.getElementById('storeTotalEarnings');
+
+    if (totalEl) totalEl.textContent = total;
+    if (acceptedEl) acceptedEl.textContent = accepted;
+    if (paidEl) paidEl.textContent = paid;
+    if (deliveredEl) deliveredEl.textContent = delivered;
+    if (earningsEl) earningsEl.textContent = `₹${earnings}`;
+
+    loadRecentActivity(myStoreRequests);
+  } catch (error) {
+    console.error('Error loading store dashboard:', error);
   }
 }
 
