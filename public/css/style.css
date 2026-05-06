@@ -1585,30 +1585,91 @@ h2 {
   box-shadow: var(--shadow);
   transition: var(--transition);
   overflow: hidden;
+  position: relative;
 }
 
 .action-card,
 .feature-card,
 .product-card,
 .testimonial-card {
-  padding: 24px;
+  padding: 32px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.8));
+  backdrop-filter: blur(10px);
+}
+
+.action-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .action-card:hover,
 .feature-card:hover,
 .product-card:hover,
 .testimonial-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
 .action-card i,
 .feature-card i,
 .product-card i {
-  font-size: 2.25rem;
-  color: var(--primary);
-  margin-bottom: 18px;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(108, 99, 255, 0.3));
 }
+
+.action-card:nth-child(1) i { background: linear-gradient(135deg, #3b82f6, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.action-card:nth-child(2) i { background: linear-gradient(135deg, #8b5cf6, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.action-card:nth-child(3) i { background: linear-gradient(135deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.action-card:nth-child(4) i { background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.action-card:nth-child(5) i { background: linear-gradient(135deg, #ef4444, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.action-card:nth-child(6) i { background: linear-gradient(135deg, #06b6d4, #0891b2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.action-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.action-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Add staggered animation for action cards */
+.action-card:nth-child(1) { animation: slideUpFade 0.6s ease-out 0.1s both; }
+.action-card:nth-child(2) { animation: slideUpFade 0.6s ease-out 0.2s both; }
+.action-card:nth-child(3) { animation: slideUpFade 0.6s ease-out 0.3s both; }
+.action-card:nth-child(4) { animation: slideUpFade 0.6s ease-out 0.4s both; }
+.action-card:nth-child(5) { animation: slideUpFade 0.6s ease-out 0.5s both; }
+.action-card:nth-child(6) { animation: slideUpFade 0.6s ease-out 0.6s both; }
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 .feature-card h3,
 .product-card h3,
