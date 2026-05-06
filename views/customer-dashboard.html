@@ -84,59 +84,86 @@
         <!-- Dashboard Section -->
         <section id="dashboard-section" class="content-section active">
           <div class="welcome-hero">
-            <h1>Find Your Style ✨</h1>
-            <p>Custom curated fashion requests made simple</p>
-            <button class="cta-btn" onclick="showNewRequest()">
-              <i class="fas fa-plus"></i>
-              Create New Request
-            </button>
+            <div>
+              <h1>Next-level fashion, delivered.</h1>
+              <p>Explore curated looks, manage your style orders, and get personalized fashion guidance in one premium dashboard.</p>
+              <div class="hero-actions">
+                <button class="cta-btn" onclick="showSection('requests')">
+                  <i class="fas fa-plus"></i>
+                  Start a Request
+                </button>
+                <button class="secondary-btn" onclick="showSection('orders')">
+                  Browse Orders
+                </button>
+              </div>
+            </div>
+            <div class="hero-visual">
+              <div class="hero-card">
+                <span class="hero-tag">Trend</span>
+                <h3>Streetwear meets modern tailoring</h3>
+                <p>Style recommendations from elite stores, custom-made for your wardrobe.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="stats-overview">
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-shopping-bag"></i>
+          <div class="trust-grid">
+            <div class="action-card">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Secure Checkout</h3>
+              <p>Encrypted payments, verified stores, and secure delivery tracking.</p>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-rocket"></i>
+              <h3>Fast Styling</h3>
+              <p>Get curated pieces and recommendations in under 48 hours.</p>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-star"></i>
+              <h3>Designer-approved</h3>
+              <p>Top-rated store partners selected for quality and premium design.</p>
+            </div>
+          </div>
+
+          <div class="featured-section">
+            <div class="section-header">
+              <h2>Recommended For You</h2>
+              <p>Fresh looks based on your recent fashion requests.</p>
+            </div>
+            <div class="featured-grid">
+              <div class="feature-card">
+                <i class="fas fa-tshirt"></i>
+                <h3>Minimal Capsule Wardrobe</h3>
+                <p>Effortless essentials designed to mix and match with confidence.</p>
               </div>
-              <div class="stat-content">
-                <h3 id="custTotalRequests">0</h3>
-                <p>Total Requests</p>
+              <div class="feature-card">
+                <i class="fas fa-sparkles"></i>
+                <h3>Luxury Streetwear Edit</h3>
+                <p>Stylish comfort with premium textures and elevated silhouettes.</p>
+              </div>
+              <div class="feature-card">
+                <i class="fas fa-shoe-prints"></i>
+                <h3>Seasonal Trend Drop</h3>
+                <p>Curated fits for the latest drop: bold colors, tailored lines, and polished details.</p>
               </div>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-magic"></i>
-              </div>
-              <div class="stat-content">
-                <h3 id="custCuratedCount">0</h3>
-                <p>Curated</p>
-              </div>
+          </div>
+
+          <div class="action-grid">
+            <div class="action-card">
+              <i class="fas fa-bell"></i>
+              <h3>Live Updates</h3>
+              <p>Track every order stage from accepted to delivered.
+              </p>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-credit-card"></i>
-              </div>
-              <div class="stat-content">
-                <h3 id="custPaidCount">0</h3>
-                <p>Paid</p>
-              </div>
+            <div class="action-card">
+              <i class="fas fa-wallet"></i>
+              <h3>Budget Smart</h3>
+              <p>Find premium options inside your budget with curated store recommendations.</p>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-truck"></i>
-              </div>
-              <div class="stat-content">
-                <h3 id="custShippedCount">0</h3>
-                <p>Shipped</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div class="stat-content">
-                <h3 id="custDeliveredCount">0</h3>
-                <p>Delivered</p>
-              </div>
+            <div class="action-card">
+              <i class="fas fa-heart"></i>
+              <h3>Wishlist Ready</h3>
+              <p>Save favorites and effortlessly reorder your best styles.</p>
             </div>
           </div>
 
@@ -144,6 +171,67 @@
             <h2>Recent Activity</h2>
             <div class="activity-list" id="recentActivity">
               <!-- Activity items will be populated by JS -->
+            </div>
+          </div>
+
+          <div class="testimonial-section">
+            <h2>Customer Highlights</h2>
+            <div class="testimonial-grid">
+              <div class="testimonial-card">
+                <div class="testimonial-meta">
+                  <div class="testimonial-avatar">A</div>
+                  <div>
+                    <strong>Amara S.</strong>
+                    <p>Delivered in style</p>
+                  </div>
+                </div>
+                <p>"HANG UP made it easy to get flawless outfit ideas for every occasion. The service feels premium and effortless."</p>
+              </div>
+              <div class="testimonial-card">
+                <div class="testimonial-meta">
+                  <div class="testimonial-avatar">R</div>
+                  <div>
+                    <strong>Riya P.</strong>
+                    <p>Trusted picks</p>
+                  </div>
+                </div>
+                <p>"The designers understood my taste instantly. The dashboard helps me track every step and keep my wardrobe updated."</p>
+              </div>
+              <div class="testimonial-card">
+                <div class="testimonial-meta">
+                  <div class="testimonial-avatar">K</div>
+                  <div>
+                    <strong>Kiran M.</strong>
+                    <p>Quick styling</p>
+                  </div>
+                </div>
+                <p>"Love how clean the experience is. The curated suggestions feel personal, not generic."</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <div class="footer-grid">
+              <div>
+                <h3 class="footer-title">HANG UP</h3>
+                <p class="footer-note">A premium fashion experience for customers and stores.</p>
+              </div>
+              <div>
+                <h4 class="footer-title">Quick links</h4>
+                <span class="footer-link">Dashboard</span>
+                <span class="footer-link">Orders</span>
+                <span class="footer-link">Requests</span>
+              </div>
+              <div>
+                <h4 class="footer-title">Support</h4>
+                <span class="footer-link">Help center</span>
+                <span class="footer-link">Privacy policy</span>
+                <span class="footer-link">Terms</span>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <span>© 2026 HANG UP</span>
+              <span>Designed for premium fashion experiences</span>
             </div>
           </div>
         </section>

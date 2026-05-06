@@ -72,55 +72,152 @@
       <div class="content-area">
         <section id="dashboard-section" class="content-section active">
           <div class="welcome-hero">
-            <h1>Store Dashboard</h1>
-            <p>Accept, curate, ship and manage your fashion orders in one place.</p>
-            <button class="cta-btn" onclick="showSection('requests')">
-              <i class="fas fa-tasks"></i>
-              View Requests
-            </button>
+            <div>
+              <h1>Sell fashion with premium speed.</h1>
+              <p>Manage every order, curate looks, and keep your store performance runway-ready.</p>
+              <div class="hero-actions">
+                <button class="cta-btn" onclick="showSection('requests')">
+                  <i class="fas fa-clipboard-list"></i>
+                  Review Requests
+                </button>
+                <button class="secondary-btn" onclick="showSection('profile')">
+                  Edit Profile
+                </button>
+              </div>
+            </div>
+            <div class="hero-visual">
+              <div class="hero-card">
+                <span class="hero-tag">Store Pulse</span>
+                <h3>Optimize orders with a modern control panel</h3>
+                <p>Keep every request moving, reduce delivery friction, and boost ratings.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="stats-overview">
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-box"></i></div>
-              <div class="stat-content">
-                <h3 id="storeTotalOrders">0</h3>
-                <p>Total Orders</p>
+          <div class="trust-grid">
+            <div class="action-card">
+              <i class="fas fa-award"></i>
+              <h3>Top Rated Stores</h3>
+              <p>Only trusted partners with great customer feedback remain visible.</p>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-truck-loading"></i>
+              <h3>Fast Fulfillment</h3>
+              <p>Handle acceptances, shipping updates, and delivered orders in one workflow.</p>
+            </div>
+            <div class="action-card">
+              <i class="fas fa-chart-line"></i>
+              <h3>Growth Insights</h3>
+              <p>Track earnings and order velocity with clear metrics at a glance.</p>
+            </div>
+          </div>
+
+          <div class="featured-section">
+            <div class="section-header">
+              <h2>Store Highlights</h2>
+              <p>Performance sections curated for fast action and better margins.</p>
+            </div>
+            <div class="featured-grid">
+              <div class="feature-card">
+                <i class="fas fa-fire"></i>
+                <h3>Hot Requests</h3>
+                <p>Quickly see premium requests with high budgets and urgent timelines.</p>
+              </div>
+              <div class="feature-card">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>Stock Insights</h3>
+                <p>Keep inventory aligned with trending categories and customer demand.</p>
+              </div>
+              <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>Support Ready</h3>
+                <p>Respond to customers with premium service and order transparency.</p>
               </div>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-check"></i></div>
-              <div class="stat-content">
-                <h3 id="storeAcceptedCount">0</h3>
-                <p>Accepted</p>
-              </div>
+          </div>
+
+          <div class="action-grid">
+            <div class="action-card">
+              <i class="fas fa-bolt"></i>
+              <h3>Quick Accept</h3>
+              <p>Respond faster and keep order cycles moving across the dashboard.</p>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
-              <div class="stat-content">
-                <h3 id="storePaidCount">0</h3>
-                <p>Paid</p>
-              </div>
+            <div class="action-card">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Verified Delivery</h3>
+              <p>Only delivered orders can be removed once completed, keeping history clean.</p>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-              <div class="stat-content">
-                <h3 id="storeDeliveredCount">0</h3>
-                <p>Delivered</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon"><i class="fas fa-wallet"></i></div>
-              <div class="stat-content">
-                <h3 id="storeTotalEarnings">₹0</h3>
-                <p>Earnings</p>
-              </div>
+            <div class="action-card">
+              <i class="fas fa-user-check"></i>
+              <h3>Customer Trust</h3>
+              <p>Build repeat buyers with polished communication and sleek order tracking.</p>
             </div>
           </div>
 
           <div class="recent-activity">
             <h2>Recent Workflow</h2>
             <div class="activity-list" id="recentActivity"></div>
+          </div>
+
+          <div class="testimonial-section">
+            <h2>Partner Reviews</h2>
+            <div class="testimonial-grid">
+              <div class="testimonial-card">
+                <div class="testimonial-meta">
+                  <div class="testimonial-avatar">S</div>
+                  <div>
+                    <strong>Suyog K.</strong>
+                    <p>Store partner</p>
+                  </div>
+                </div>
+                <p>"The dashboard helps us move faster than ever. We can manage requests and deliveries without any friction."</p>
+              </div>
+              <div class="testimonial-card">
+                <div class="testimonial-meta">
+                  <div class="testimonial-avatar">N</div>
+                  <div>
+                    <strong>Nisha R.</strong>
+                    <p>Store manager</p>
+                  </div>
+                </div>
+                <p>"Sales improved after we started using HANG UP. The interface is clean and the request workflow is intuitive."</p>
+              </div>
+              <div class="testimonial-card">
+                <div class="testimonial-meta">
+                  <div class="testimonial-avatar">T</div>
+                  <div>
+                    <strong>Tanya P.</strong>
+                    <p>Operations lead</p>
+                  </div>
+                </div>
+                <p>"Love the way the dashboard keeps everything organized. Delivered orders are easy to review and manage."</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <div class="footer-grid">
+              <div>
+                <h3 class="footer-title">HANG UP Store</h3>
+                <p class="footer-note">Control your shop with a premium commerce dashboard.</p>
+              </div>
+              <div>
+                <h4 class="footer-title">Manage</h4>
+                <span class="footer-link">Requests</span>
+                <span class="footer-link">Orders</span>
+                <span class="footer-link">Profile</span>
+              </div>
+              <div>
+                <h4 class="footer-title">Resources</h4>
+                <span class="footer-link">Support</span>
+                <span class="footer-link">Policies</span>
+                <span class="footer-link">Updates</span>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <span>© 2026 HANG UP</span>
+              <span>Built for modern fashion stores</span>
+            </div>
           </div>
         </section>
 
