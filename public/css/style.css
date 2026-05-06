@@ -1260,14 +1260,14 @@ h2 {
 
 .search-bar {
   flex: 1;
-  max-width: 400px;
+  max-width: 700px;
   margin: 0 24px;
   position: relative;
 }
 
 .search-bar i {
   position: absolute;
-  left: 12px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
@@ -1275,12 +1275,13 @@ h2 {
 
 .search-bar input {
   width: 100%;
-  padding: 12px 12px 12px 40px;
+  padding: 14px 16px 14px 44px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 18px;
   background: var(--background);
-  font-size: 14px;
+  font-size: 15px;
   transition: var(--transition);
+  min-width: 280px;
 }
 
 .search-bar input:focus {
@@ -1332,11 +1333,7 @@ h2 {
 }
 
 .profile-pic {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border);
+  display: none;
 }
 
 .username {
@@ -1736,14 +1733,71 @@ h2 {
 .featured-section,
 .testimonial-section,
 .trust-section,
-.recent-orders-section {
+.recent-orders-section,
+.recent-activity {
   margin-bottom: 32px;
 }
 
 .featured-section h2,
 .testimonial-section h2,
-.recent-orders-section h2 {
+.recent-orders-section h2,
+.recent-activity h2 {
   margin-bottom: 20px;
+}
+
+.visual-grid-section {
+  margin-bottom: 32px;
+}
+
+.visual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.visual-card {
+  min-height: 280px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.visual-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.15), transparent 40%);
+}
+
+.visual-thumb {
+  height: 100%;
+  border-radius: inherit;
+  background-size: cover;
+  background-position: center;
+}
+
+.visual-card h3 {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 1;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.thumb-1 { background-image: linear-gradient(180deg, rgba(20, 25, 52, 0.35), transparent), url('/images/fashion-1.jpg'); }
+.thumb-2 { background-image: linear-gradient(180deg, rgba(20, 25, 52, 0.35), transparent), url('/images/fashion-2.jpg'); }
+.thumb-3 { background-image: linear-gradient(180deg, rgba(20, 25, 52, 0.35), transparent), url('/images/fashion-3.jpg'); }
+
+.testimonial-section,
+.recent-activity {
+  display: none;
 }
 
 .stat-icon {
@@ -2050,12 +2104,17 @@ h2 {
   margin-bottom: 32px;
 }
 
+.profile-header-no-image .profile-info {
+  max-width: 420px;
+}
+
 .profile-avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--primary);
+  display: none;
 }
 
 .profile-info h3 {
