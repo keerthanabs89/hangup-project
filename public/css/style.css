@@ -1605,9 +1605,9 @@ h2 {
 .action-card i,
 .feature-card i,
 .product-card i {
-  font-size: 1.5rem;
+  font-size: 2.25rem;
   color: var(--primary);
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .feature-card h3,
@@ -1744,56 +1744,6 @@ h2 {
 .recent-activity h2 {
   margin-bottom: 20px;
 }
-
-.visual-grid-section {
-  margin-bottom: 32px;
-}
-
-.visual-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.visual-card {
-  min-height: 280px;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.visual-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at top left, rgba(255,255,255,0.15), transparent 40%);
-}
-
-.visual-thumb {
-  height: 100%;
-  border-radius: inherit;
-  background-size: cover;
-  background-position: center;
-}
-
-.visual-card h3 {
-  position: absolute;
-  left: 24px;
-  bottom: 24px;
-  z-index: 1;
-  color: white;
-  font-size: 1.25rem;
-  font-weight: 800;
-  text-shadow: 0 10px 30px rgba(0,0,0,0.35);
-}
-
-.thumb-1 { background-image: linear-gradient(180deg, rgba(20, 25, 52, 0.35), transparent), url('/images/fashion-1.jpg'); }
-.thumb-2 { background-image: linear-gradient(180deg, rgba(20, 25, 52, 0.35), transparent), url('/images/fashion-2.jpg'); }
-.thumb-3 { background-image: linear-gradient(180deg, rgba(20, 25, 52, 0.35), transparent), url('/images/fashion-3.jpg'); }
 
 .testimonial-section,
 .recent-activity {
